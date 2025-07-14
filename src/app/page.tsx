@@ -471,7 +471,6 @@ export default function JanCranes() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
-                <p className="text-sm text-gray-600">מנוף הרמה עד קומה 23</p>
               </div>
             </div>
             
@@ -532,6 +531,9 @@ export default function JanCranes() {
                   ג'אן מנופים
                 </h1>
                 
+                <p className="text-2xl md:text-3xl mb-6 text-blue-100 font-semibold text-shadow animate-fadeInUp animate-delay-300">
+                  מנוף הרמה עד קומה 23
+                </p>
                 
                 <p className="text-xl mb-12 max-w-4xl mx-auto text-blue-100 leading-relaxed text-shadow animate-fadeInUp animate-delay-600">
                   החברה המובילה להרמה לגובה בדרום הארץ. עם ניסיון של שנים, צי מנופים חדיש ושירות שלא מתפשר – אנחנו כאן כדי להרים לכם את הכל.
