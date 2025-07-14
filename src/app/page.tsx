@@ -24,6 +24,7 @@ import {
   ArrowLeft,
   User
 } from "lucide-react";
+import Crane from "@/app/Crane";
 
 interface Article {
   title: string;
@@ -467,7 +468,7 @@ export default function JanCranes() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
-                <Truck className="w-6 h-6 text-white" />
+                <Crane className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
@@ -523,7 +524,7 @@ export default function JanCranes() {
               <div className="text-center">
                 <div className="flex justify-center mb-8">
                   <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Truck className="w-16 h-16 text-white" />
+                    <Crane className="w-16 h-16 text-white" />
                   </div>
                 </div>
                 
