@@ -467,8 +467,8 @@ export default function JanCranes() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
-                <Crane className="w-18 h-18 text-white" />
+              <div className="w-16 h-16 gradient-bg rounded-lg flex items-center justify-center">
+                <Crane className="w-22 h-22 text-white" />
               </div>
               {/* <div>
                 <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
@@ -524,7 +524,7 @@ export default function JanCranes() {
               <div className="text-center">
                 <div className="flex justify-center mb-8">
                   <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Crane className="w-22 h-22 text-white" />
+                    <Crane className="w-24 h-24 text-white" />
                   </div>
                 </div>
                 
