@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { 
-  Truck, 
   Home, 
   Users, 
   Phone, 
@@ -480,7 +479,7 @@ useEffect(() => {
       <header
         className={`floating-header transition-all duration-300 ease-in-out z-50 fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 ${
             "bg-white/80 shadow-xl border border-gray-200 rounded-3xl"
-        } max-w-6xl mx-auto mt-4`}
+        } max-w-6xl mx-auto mt-4 `}
         dir="rtl"
       >
         <div className="flex justify-between items-center h-16">
@@ -518,7 +517,8 @@ useEffect(() => {
               href="https://wa.me/message/KBPJM744WZNBE1"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
+              style={{backgroundColor:'#00AFFE'}}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">WhatsApp</span>
@@ -527,10 +527,11 @@ useEffect(() => {
             {/* Phone number (icon only on mobile) */}
             <a
               href="tel:0505477789"
-              className="orange-gradient text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+              style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
+              className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
             >
-              <Phone className="w-4 h-4" />
-              <span className="hidden sm:inline">050-5477789</span>
+              <Phone className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
             </a>
 
             {/* Hamburger Menu */}
@@ -580,7 +581,9 @@ useEffect(() => {
               <div className="text-center">
                 <div className="flex justify-center mb-8">
                   <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Crane className="w-24 h-24 text-white" />
+                    <Crane 
+                    style={{color:'#011659'}}
+                    className="w-24 h-24 " />
                   </div>
                 </div>
                 
@@ -640,7 +643,7 @@ useEffect(() => {
               <div className="text-center mb-20">
                 <div className="inline-block mb-4">
                   <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Truck className="w-8 h-8 text-white" />
+                    <Crane className="w-8 h-8 text-white" />
                   </div>
                 </div>
                 <h2 className="text-5xl font-bold text-gray-900 mb-6">
@@ -1132,7 +1135,7 @@ useEffect(() => {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  <Truck className="w-6 h-6 text-white" />
+                  <Crane className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold">ג'אן מנופים</h3>
               </div>
