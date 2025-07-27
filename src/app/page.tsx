@@ -314,6 +314,9 @@ useEffect(() => {
         .orange-gradient {
           background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
         }
+        .blue-gradient {
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        }
         
         .floating-header {
           position: fixed;
@@ -953,7 +956,7 @@ useEffect(() => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
               <div className="card shadow-lg">
                 <div className="card-header">
-                  <h2 className="text-2xl text-gray-900 font-semibold">
+                  <h2 className=" text-2xl text-gray-900 font-semibold">
                     שלחו הודעה
                   </h2>
                 </div>
@@ -1043,7 +1046,7 @@ useEffect(() => {
                         />
                       </div>
                       
-                      <button onClick={handleSubmit} className="btn btn-primary w-full">
+                      <button onClick={handleSubmit} style={{backgroundColor:'00AFFE'}} className=" btn blue-gradient w-full">
                         שלחו הודעה
                       </button>
                     </div>
