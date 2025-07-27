@@ -23,7 +23,11 @@ import {
   ArrowLeft,
   User,
   Menu,
-  X
+  X,
+  BaggageClaim,
+  BadgeHelp,
+  BadgeIcon,
+  InfoIcon
 } from "lucide-react";
 import Crane from "@/app/Crane";
 
@@ -473,6 +477,9 @@ useEffect(() => {
         .hero-gradient-overlay {
           background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(30, 64, 175, 0.6) 50%, rgba(59, 130, 246, 0.4) 100%);
         }
+                .m-gradient-overlay {
+          background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(30, 64, 175, 0.6) 50%, rgba(59, 130, 246, 0.4) 100%);
+        }
       `}</style>
 
     <>
@@ -642,7 +649,7 @@ useEffect(() => {
               <div className="text-center mb-20">
                 <div className="inline-block mb-4">
                   <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Crane className="w-19 h-19 text-white" />
+                    <InfoIcon className="w-14 h-14 text-white" />
                   </div>
                 </div>
                 <h2 className="text-5xl font-bold text-gray-900 mb-6">
@@ -749,7 +756,9 @@ useEffect(() => {
             </div>
           </div>
 
-          <div className="py-24 orange-gradient text-white">
+          <div
+          style={{backgroundColor:'#00AFFE'}}
+           className="py-24 text-white m-gradient-overlay">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h2 className="text-5xl font-bold mb-8">
                 מוכנים להרמה?
@@ -760,6 +769,8 @@ useEffect(() => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <a
                   href="tel:0505477789"
+                            style={{color:'#011659'}}
+
                   className="bg-white text-orange-600 hover:bg-gray-100 text-xl px-10 py-6 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-3"
                 >
                   <Phone className="w-6 h-6" />
