@@ -30,6 +30,7 @@ import {
   InfoIcon
 } from "lucide-react";
 import Crane from "@/app/Crane";
+/* Varela Round font import moved to global style below */
 
 interface Article {
   title: string;
@@ -303,8 +304,9 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
         * {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: 'Varela Round', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .gradient-bg {
@@ -481,7 +483,7 @@ useEffect(() => {
           background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(30, 64, 175, 0.6) 50%, rgba(59, 130, 246, 0.4) 100%);
         }
                 .m-gradient-overlay {
-          background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(30, 64, 175, 0.6) 50%, rgba(59, 130, 246, 0.4) 100%);
+          background: linear-gradient(135deg, #1e3a8acc 0%, rgba(30, 64, 175, 0.6) 50%, rgba(59, 130, 246, 0.4) 100%);
         }
       `}</style>
 
@@ -494,11 +496,11 @@ useEffect(() => {
       >
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center">
-              <Crane className="w-20 h-20 text-white" />
-            </div>
+            {/* <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center"> */}
+              <Crane fill={'#0a2b86cc'}className="w-20 h-20 text-white" />
+            {/* </div> */}
             <div>
-              <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
+              <h1 className="text-xl font-bold text-gray-900" style={{color:'#011659'}}>ג'אן מנופים</h1>
               <p className="text-sm text-gray-600">מנוף הרמה עד קומה 23</p>
             </div>
           </div>
@@ -506,18 +508,27 @@ useEffect(() => {
           {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-4 space-x-reverse">
             {navigation.map((item) => (
-              <button
+                <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${
                   activeSection === item.href
-                    ? "text-[#011659] bg-[#E6F8FF]"
-                    : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+                  ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
+                  : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
                 }`}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.name}
-              </button>
+                style={{
+                  transition: "box-shadow 0.3s, transform 0.3s, background 0.3s",
+                }}
+                >
+                {activeSection === item.href && (
+                  <span className="absolute inset-0 bg-gradient-to-r from-blue-200 to-blue-100 opacity-40 rounded-lg animate-pulse pointer-events-none"></span>
+                )}
+                <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
+                <span className="z-10">{item.name}</span>
+                {activeSection === item.href && (
+                  <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2/3 h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"></span>
+                )}
+                </button>
             ))}
           </nav>
 
@@ -589,11 +600,9 @@ useEffect(() => {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <div className="text-center">
-                <div className="flex justify-center mb-8">
-                  <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <div className="flex justify-center ">
                     <Crane 
-                    className="w-24 h-24 " />
-                  </div>
+                    className="w-44 h-44 " />
                 </div>
                 
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 text-shadow animate-fadeInUp">
@@ -720,7 +729,7 @@ useEffect(() => {
                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
                 </h2>
                 <p className="text-2xl text-gray-600 max-w-2xl mx-auto">
-                  הדיוק שמרימים איתו – השירות ששחוזרים אליו
+                  הדיוק שמרימים איתו – השירות שמחזירים אליו
                 </p>
               </div>
 
