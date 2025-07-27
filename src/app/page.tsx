@@ -720,7 +720,7 @@ useEffect(() => {
                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
                 </h2>
                 <p className="text-2xl text-gray-600 max-w-2xl mx-auto">
-                  הדיוק שמרימים איתו – השירות שמחזירים אליו
+                  הדיוק שמרימים איתו – השירות ששחוזרים אליו
                 </p>
               </div>
 
