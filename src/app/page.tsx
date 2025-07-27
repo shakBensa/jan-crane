@@ -983,7 +983,7 @@ useEffect(() => {
                   ) : (
                     <div className="space-y-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium mb-2" style={{ color: "#011659" }}>
                           שם מלא
                         </label>
                         <input
@@ -992,11 +992,12 @@ useEffect(() => {
                           onChange={handleInputChange}
                           placeholder="הכניסו את השם המלא"
                           className="input"
+                          style={{ color: "#011659" }}
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium mb-2" style={{ color: "#011659" }}>
                           טלפון
                         </label>
                         <input
@@ -1006,11 +1007,12 @@ useEffect(() => {
                           onChange={handleInputChange}
                           placeholder="050-1234567"
                           className="input"
+                          style={{ color: "#011659" }}
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium mb-2" style={{ color: "#011659" }}>
                           אימייל
                         </label>
                         <input
@@ -1020,11 +1022,12 @@ useEffect(() => {
                           onChange={handleInputChange}
                           placeholder="your@email.com"
                           className="input"
+                          style={{ color: "#011659" }}
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium mb-2" style={{ color: "#011659" }}>
                           סוג השירות
                         </label>
                         <select
@@ -1032,18 +1035,19 @@ useEffect(() => {
                           value={formData.serviceType}
                           onChange={handleInputChange}
                           className="input"
+                          style={{ color: "#011659" }}
                         >
-                          <option value="">בחרו סוג שירות</option>
+                          <option value="" style={{ color: "#011659" }}>בחרו סוג שירות</option>
                           {serviceTypes.map((service, index) => (
-                            <option key={index} value={service}>
+                            <option key={index} value={service} style={{ color: "#011659" }}>
                               {service}
                             </option>
                           ))}
                         </select>
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium mb-2" style={{ color: "#011659" }}>
                           הודעה
                         </label>
                         <textarea
@@ -1052,6 +1056,7 @@ useEffect(() => {
                           onChange={handleInputChange}
                           placeholder="תארו את הפרויקט שלכם..."
                           className="textarea"
+                          style={{ color: "#011659" }}
                         />
                       </div>
                       
