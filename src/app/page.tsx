@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { 
   Truck, 
   Home, 
@@ -22,7 +22,9 @@ import {
   CheckCircle,
   ArrowRight,
   ArrowLeft,
-  User
+  User,
+  Menu,
+  X
 } from "lucide-react";
 import Crane from "@/app/Crane";
 
@@ -58,7 +60,25 @@ export default function JanCranes() {
     message: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId:string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
   const navigation = [
     { name: "בית", href: "home", icon: Home },
     { name: "גלריה", href: "gallery", icon: Users },
@@ -66,14 +86,7 @@ export default function JanCranes() {
     { name: "צור קשר", href: "contact", icon: Phone },
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
-    setSelectedArticle(null);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -142,42 +155,42 @@ export default function JanCranes() {
 
   const projects = [
     {
-      title: "הרמת חומרי בניין - פרויקט באשדוד",
+      title: "הרמת חומרי בניין",
       category: "בנייה",
       description: "הרמת בלוקים וטיט לקומה 15 באתר בנייה באשדוד",
       image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&h=300&fit=crop",
       height: "קומה 15"
     },
     {
-      title: "הרמת ספה לדירה - גן יבנה",
+      title: "הרמת ספה לדירה",
       category: "רהיטים",
       description: "הרמת סלון מושלם דרך המרפסת בקומה 8",
       image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=300&fit=crop",
       height: "קומה 8"
     },
     {
-      title: "התקנת פאנלים סולאריים - אשקלון",
+      title: "התקנת פאנלים סולאריים",
       category: "סולארי",
       description: "הרמת קולטים סולאריים לגג בית פרטי",
       image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop",
       height: "גג בית"
     },
     {
-      title: "הרמת מטבח מפואר - יבנה",
+      title: "הרמת מטבח מפואר",
       category: "מטבחים",
       description: "הרמת משטחי שיש וארונות מטבח לקומה 6",
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop",
       height: "קומה 6"
     },
     {
-      title: "הנפת פרגולה - מושב בדרום",
+      title: "הנפת פרגולה",
       category: "פרגולות",
       description: "הנפת פרגולה אלומיניום לגינה פרטית",
       image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=300&fit=crop",
       height: "חצר"
     },
     {
-      title: "הרמת מכונת כביסה - אשדוד",
+      title: "הרמת מכונת כביסה",
       category: "מוצרי חשמל",
       description: "הרמת מכונת כביסה ומייבש לדירה בקומה 12",
       image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop",
@@ -350,12 +363,12 @@ export default function JanCranes() {
         }
         
         .btn-primary {
-          background: #2563eb;
+          background: ##011659;
           color: white;
         }
         
         .btn-primary:hover {
-          background: #1d4ed8;
+          background: #0393d6;
         }
         
         .input, .textarea {
@@ -369,7 +382,7 @@ export default function JanCranes() {
         
         .input:focus, .textarea:focus {
           outline: none;
-          border-color: #2563eb;
+          border-color: ##011659;
           box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         
@@ -383,7 +396,7 @@ export default function JanCranes() {
         }
         
         .hero-bg {
-          background-image: url('https://images.unsplash.com/photo-1586458995526-09ce6839babe?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-image: url('11.jpeg');
           background-size: cover;
           background-position: center;
           animation: heroZoom 30s ease-in-out infinite alternate;
@@ -463,58 +476,101 @@ export default function JanCranes() {
         }
       `}</style>
 
-      <header className="floating-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 gradient-bg rounded-lg flex items-center justify-center">
-                <Crane className="w-22 h-22 text-white" />
-              </div>
-              {/* <div>
-                <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
-              </div> */}
+    <>
+      <header
+        className={`floating-header transition-all duration-300 ease-in-out z-50 fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 ${
+            "bg-white/80 shadow-xl border border-gray-200 rounded-3xl"
+        } max-w-6xl mx-auto mt-4`}
+        dir="rtl"
+      >
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center">
+              <Crane className="w-20 h-20 text-white" />
             </div>
-            
-            <nav className="hidden md:flex space-x-8 space-x-reverse">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    activeSection === item.href
-                      ? 'text-blue-700 bg-blue-50'
-                      : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'
-                  }`}
-                >
-                  <item.icon className="w-4 h-4" />
-                  {item.name}
-                </button>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <a
-                href="https://wa.me/message/KBPJM744WZNBE1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
-              >
-                <MessageSquare className="w-4 h-4" />
-                WhatsApp
-              </a>
-              
-              <a
-                href="tel:0505477789"
-                className="orange-gradient text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200"
-              >
-                050-5477789
-              </a>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">ג'אן מנופים</h1>
+              <p className="text-sm text-gray-600">מנוף הרמה עד קומה 23</p>
             </div>
           </div>
-        </div>
-      </header>
 
-      <main className="pt-16">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex space-x-4 space-x-reverse">
+            {navigation.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.href)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  activeSection === item.href
+                    ? "text-[#011659] bg-[#E6F8FF]"
+                    : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.name}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            {/* WhatsApp */}
+            <a
+              href="https://wa.me/message/KBPJM744WZNBE1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
+
+            {/* Phone number (icon only on mobile) */}
+            <a
+              href="tel:0505477789"
+              className="orange-gradient text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+            >
+              <Phone className="w-4 h-4" />
+              <span className="hidden sm:inline">050-5477789</span>
+            </a>
+
+            {/* Hamburger Menu */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Nav Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/90 backdrop-blur-md shadow-lg rounded-b-2xl px-4 py-4 space-y-2">
+            {navigation.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.href)}
+                className={`flex w-full items-center justify-between px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
+                  activeSection === item.href
+                    ? "text-[#011659] bg-[#E6F8FF]"
+                    : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+                }`}
+              >
+                <span>{item.name}</span>
+                <item.icon className="w-5 h-5" />
+              </button>
+            ))}
+          </div>
+        )}
+      </header>
+    </>
+
+
+      <main >
         <section id="home" className="min-h-screen">
           <div className="relative text-white min-h-screen flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 hero-bg"></div>
@@ -652,7 +708,7 @@ export default function JanCranes() {
                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
                 </h2>
                 <p className="text-2xl text-gray-600 max-w-2xl mx-auto">
-                  הדיוק שמרימים איתו – השירות שחוזרים אליו
+                  הדיוק שמרימים איתו – השירות שמחזירים אליו
                 </p>
               </div>
 
@@ -737,7 +793,7 @@ export default function JanCranes() {
                 <div key={index} className="card hover:shadow-xl transition-shadow duration-300">
                   <div className="aspect-video relative overflow-hidden">
                     <img
-                      src={project.image}
+                      src={`${index + 1}.jpeg`}
                       alt={project.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
