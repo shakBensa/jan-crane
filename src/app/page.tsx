@@ -65,6 +65,35 @@ export default function JanCranes() {
   const articlesPerPageMobile = 3;
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  // Add this state and effect at the top of your component
+const [isDesktop, setIsDesktop] = useState(false);
+
+useEffect(() => {
+  const checkScreenSize = () => {
+    setIsDesktop(isDesktop);
+  };
+  
+  // Check on mount
+  checkScreenSize();
+  
+  // Add resize listener
+  window.addEventListener('resize', checkScreenSize);
+  
+  return () => window.removeEventListener('resize', checkScreenSize);
+}, []);
+useEffect(() => {
+  const checkScreenSize = () => {
+    setIsDesktop(isDesktop);
+  };
+  
+  // Check on mount
+  checkScreenSize();
+  
+  // Add resize listener
+  window.addEventListener('resize', checkScreenSize);
+  
+  return () => window.removeEventListener('resize', checkScreenSize);
+}, []);
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -100,9 +129,43 @@ export default function JanCranes() {
     }));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
+    // Here you would typically send the form data to your server or API
+    console.log("Form submitted:", formData);
+  const formDataToSend = {
+    ...formData,
+    access_key: "c396fe2b-18e7-42b4-8522-1a479973ff83"
+  };
+  
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formDataToSend),
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    console.log("Form submission successful:", data);
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  }
+
+
+    // Reset form data
+    setFormData({
+      name: "",
+      phone: "",
+      email: "",
+      serviceType: "",
+      message: ""
+    });
+
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
@@ -288,7 +351,7 @@ export default function JanCranes() {
   useEffect(() => {
     if (isAutoPlaying) {
       const interval = setInterval(() => {
-        if (window.innerWidth >= 768) {
+        if (isDesktop) {
           // Desktop: move 3 reviews at a time
           setCurrentReviewIndex((prev) =>
             prev + 3 >= cleanedReviews.length ? 0 : prev + 3
@@ -1393,14 +1456,9 @@ export default function JanCranes() {
           </div>
         </section>
 
-        <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-block mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl">
-                  <Star className="w-10 h-10 text-white" />
-                </div>
-              </div>
               <h2 className="text-5xl font-bold text-gray-900 mb-6">
                 מה הלקוחות שלנו אומרים
               </h2>
@@ -1528,7 +1586,7 @@ export default function JanCranes() {
               {/* Navigation Arrows - Corrected for RTL */}
               <button
                 onClick={() => {
-                  if (window.innerWidth >= 768) {
+                  if (isDesktop) {
                     // Desktop: move 3 reviews at a time
                     setCurrentReviewIndex((prev) =>
                       prev + 3 >= cleanedReviews.length ? 0 : prev + 3
@@ -1547,7 +1605,7 @@ export default function JanCranes() {
               </button>{/* Navigation Arrows - Corrected for RTL */}
               <button
                 onClick={() => {
-                  if (window.innerWidth >= 768) {
+                  if (isDesktop) {
                     // Desktop: move 3 reviews at a time
                     setCurrentReviewIndex((prev) =>
                       prev + 3 >= cleanedReviews.length ? 0 : prev + 3
@@ -1567,7 +1625,7 @@ export default function JanCranes() {
 
               <button
                 onClick={() => {
-                  if (window.innerWidth >= 768) {
+                  if (isDesktop) {
                     // Desktop: move 3 reviews at a time
                     setCurrentReviewIndex((prev) =>
                       prev - 3 < 0 ? Math.floor((cleanedReviews.length - 1) / 3) * 3 : prev - 3
@@ -1607,11 +1665,11 @@ export default function JanCranes() {
 
                 {/* Right side indicators */}
                 <div className="flex gap-2 items-center">
-                  <div className={`rounded-full transition-all duration-500 ${(window.innerWidth >= 768 ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
+                  <div className={`rounded-full transition-all duration-500 ${(isDesktop ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
                       ? 'w-2 h-2 bg-gray-400 opacity-80'
                       : 'w-1.5 h-1.5 bg-gray-200 opacity-40'
                     }`}></div>
-                  <div className={`rounded-full transition-all duration-500 ${(window.innerWidth >= 768 ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
+                  <div className={`rounded-full transition-all duration-500 ${(isDesktop ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
                       ? 'w-1.5 h-1.5 bg-gray-300 opacity-60'
                       : 'w-1 h-1 bg-gray-200 opacity-30'
                     }`}></div>
