@@ -43,7 +43,7 @@ interface FormData {
   message: string;
 }
 
-type CategoryKey = "בנייה" | "רהיטים" | "סולארי" | "מטבחים" | "פרגולות" | "מוצרי חשמל" | "טיפים" | "מקצועי";
+type CategoryKey = "בנייה" | "רהיטים" | "סולארי" | "מטבחים" | "פרגולות" | "מוצרי חשמל" | "טיפים" | "מקצועי" | "שירותים" | "אחר";
 
 export default function JanCranes() {
   const [activeSection, setActiveSection] = useState("home");
@@ -288,7 +288,9 @@ const articles = [
     "פרגולות": "bg-orange-100 text-orange-800",
     "מוצרי חשמל": "bg-red-100 text-red-800",
     "טיפים": "bg-blue-100 text-blue-800",
-    "מקצועי": "bg-green-100 text-green-800"
+    "מקצועי": "bg-green-100 text-green-800",
+    "שירותים": "bg-pink-100 text-pink-800",
+    "אחר": "bg-gray-100 text-gray-800"
   };
 
   const contactInfo = [
