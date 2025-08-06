@@ -1492,7 +1492,7 @@ useEffect(() => {
                 <p className="text-gray-600 mb-6">מבוסס על {cleanedReviews.length} ביקורות בגוגל</p>
 
                 <a
-                  href="https://www.google.com/maps/place/%D7%92'%D7%90%D7%9F+%D7%9E%D7%A0%D7%95%D7%A4%D7%99%D7%9D%E2%80%AD/@31.7874689,34.6637159,17z/data=!4m8!3m7!1s0x8635f802abd3071:0xf851b0803867d32!8m2!3d31.7874644!4d34.6662908!9m1!1b1!16s%2Fg%2F11m6h_w3zx?entry=ttu&g_ep=EgoyMDI1MDgwNC4wIKXMDSoASAFQAw%3D%3D://www.google.com/search?q=%D7%92%27%D7%90%D7%9F+%D7%9E%D7%A0%D7%95%D7%A4%D7%99%D7%9D"
+                  href="https://www.google.com/maps/place/%D7%92'%D7%90%D7%9F+%D7%9E%D7%A0%D7%95%D7%A4%D7%99%D7%9D%E2%80%AD/@31.7874689,34.6637159,17z/data=!4m8!3m7!1s0x8635f802abd3071:0xf851b0803867d32!8m2!3d31.7874644!4d34.6662908!9m1!1b1!16s%2Fg%2F11m6h_w3zx?entry=ttu&g_ep=EgoyMDI1MDgwNC4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2"
