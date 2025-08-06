@@ -27,21 +27,13 @@ import {
   BaggageClaim,
   BadgeHelp,
   BadgeIcon,
-  InfoIcon
+  InfoIcon,
+  
 } from "lucide-react";
 import Crane from "@/app/Crane";
 /* Varela Round font import moved to global style below */
 
-interface Article {
-  title: string;
-  excerpt: string;
-  content: string;
-  category: string;
-  author: string;
-  date: string;
-  readTime: string;
-  image: string;
-}
+
 
 interface FormData {
   name: string;
@@ -55,7 +47,8 @@ type CategoryKey = "בנייה" | "רהיטים" | "סולארי" | "מטבחי�
 
 export default function JanCranes() {
   const [activeSection, setActiveSection] = useState("home");
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<any | null>(null);
+  const [selectedImage, setSelectedImage] = useState<any | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
@@ -66,8 +59,12 @@ export default function JanCranes() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const imagesPerPageMobile = 3;
+  const [currentArticlePage, setCurrentArticlePage] = useState(0);
+  const articlesPerPageMobile = 3;
 
-useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -75,7 +72,7 @@ useEffect(() => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId:string) => {
+  const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
@@ -157,83 +154,131 @@ useEffect(() => {
     }
   ];
 
-  const projects = [
-    {
-      title: "הרמת חומרי בניין",
-      category: "בנייה",
-      description: "הרמת בלוקים וטיט לקומה 15 באתר בנייה באשדוד",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&h=300&fit=crop",
-      height: "קומה 15"
-    },
-    {
-      title: "הרמת ספה לדירה",
-      category: "רהיטים",
-      description: "הרמת סלון מושלם דרך המרפסת בקומה 8",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=300&fit=crop",
-      height: "קומה 8"
-    },
-    {
-      title: "התקנת פאנלים סולאריים",
-      category: "סולארי",
-      description: "הרמת קולטים סולאריים לגג בית פרטי",
-      image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop",
-      height: "גג בית"
-    },
-    {
-      title: "הרמת מטבח מפואר",
-      category: "מטבחים",
-      description: "הרמת משטחי שיש וארונות מטבח לקומה 6",
-      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop",
-      height: "קומה 6"
-    },
-    {
-      title: "הנפת פרגולה",
-      category: "פרגולות",
-      description: "הנפת פרגולה אלומיניום לגינה פרטית",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=300&fit=crop",
-      height: "חצר"
-    },
-    {
-      title: "הרמת מכונת כביסה",
-      category: "מוצרי חשמל",
-      description: "הרמת מכונת כביסה ומייבש לדירה בקומה 12",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop",
-      height: "קומה 12"
-    }
-  ];
+const galleryImages = [
+  {
+    id: 1,
+    filename: "אלומיניום-1.jpeg",
+    title: "הרמת חומרי בניין לאתר בנייה",
+    description: "הרמת ציוד בניין לקומות גבוהות בפרויקט מגורים"
+  },
+  {
+    id: 2,
+    filename: "פינוי פסולת-2.jpeg",
+    title: "פינוי פסולת מאתר בנייה",
+    description: "פינוי מקצועי של פסולת בניין"
+  },
+  {
+    id: 3,
+    filename: "פרגולות-3.jpeg",
+    title: "הרמת פרגולות",
+    description: "התקנה והרמה של פרגולות לגגות ומרפסות"
+  },
+  {
+    id: 4,
+    filename: "בניה-4.jpeg",
+    title: "עבודה באתר בנייה",
+    description: "הרמת חומרי בניין לאתר בנייה עם פיגומים"
+  },
+  {
+    id: 5,
+    filename: "שיש ומטבחים-5.jpeg",
+    title: "הרמת משטחי שיש ומטבחים",
+    description: "הרמת משטחי שיש וארונות מטבח לקומות גבוהות"
+  },
+  {
+    id: 6,
+    filename: "ריהוט ומוצרי חשמל-6.jpeg",
+    title: "הרמת ריהוט ומוצרי חשמל",
+    description: "הרמה בטוחה של רהיטים ומוצרי חשמל דרך החלון"
+  },
+  {
+    id: 7,
+    filename: "אתרי בניה-7.jpeg",
+    title: "שירות לאתרי בנייה",
+    description: "הרמת חומרי בניין לפרויקטים גדולים"
+  },
+  {
+    id: 8,
+    filename: "דודי שמש ופנלים סולארים-8.jpeg",
+    title: "התקנת דודי שמש ופאנלים סולאריים",
+    description: "הרמה והתקנה של מערכות סולאריות על גגות"
+  }
+];
 
-  const articles = [
-    {
-      title: "איך בוחרים מנוף הרמה מתאים לדירה?",
-      excerpt: "כשעוברים דירה לדירה גבוהה או כשאין מעלית – חשוב לבחור מנוף עם כושר נשיאה מתאים, מפעיל מוסמך, וביטוח.",
-      content: "כשעוברים דירה לדירה גבוהה או כשאין מעלית – חשוב לבחור מנוף עם כושר נשיאה מתאים, מפעיל מוסמך, וביטוח. מנופי ההרמה של ג'אן מתאימים לדירות עד קומה 23 וכוללים שירות מלא כולל אבטחת המטען, הורדה מדויקת והצבת הפריט במקום הרצוי. נקודות חשובות לבחירת מנוף: וודאו שיש ביטוח מקיף, בדקו שהמפעיל מוסמך ומנוסה, וודאו שכושר הנשיאה מתאים לפריט, בדקו זמינות ומהירות השירות. בג'אן הרמות אנחנו מספקים את כל הדרישות הללו ועוד, עם ניסיון מוכח ושירות אמין.",
-      category: "טיפים",
-      author: "צוות ג'אן",
-      date: "15 בדצמבר 2024",
-      readTime: "5 דקות קריאה",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=300&fit=crop"
-    },
-    {
-      title: "למה חשוב לבחור מנוף מוסמך לפרויקטים של בנייה?",
-      excerpt: "מנוף לאתר בנייה הוא לא רק ציוד – הוא שותף לעבודה. מנוף לא מתאים עלול לעכב את הבנייה ולגרום נזקים.",
-      content: "מנוף לאתר בנייה הוא לא רק ציוד – הוא שותף לעבודה. מנוף לא מתאים עלול לעכב את הבנייה ולגרום נזקים. אנחנו בג'אן הרמות עובדים עם קבלנים לפי תקנים מחמירים, עם אישורי עבודה, ניסיון מוכח וציוד מתקדם. יתרונות העבודה עם מנוף מוסמך: עמידה בתקני בטיחות, אישורי עבודה מתאימים, ציוד מתקדם ומתוחזק, מפעילים מקצועיים. העבודה עם מנוף מוסמך מבטיחה שהפרויקט יתקדם בזמן, בבטיחות ובאיכות גבוהה.",
-      category: "מקצועי",
-      author: "צוות ג'אן",
-      date: "10 בדצמבר 2024",
-      readTime: "7 דקות קריאה",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=300&fit=crop"
-    },
-    {
-      title: "התקנת פאנלים סולאריים? אל תחסוך במנוף!",
-      excerpt: "התקנת קולטים סולאריים דורשת הרמה עד הגג, ובדיוק כאן נכנס לתמונה המנוף.",
-      content: "התקנת קולטים סולאריים דורשת הרמה עד הגג, ובדיוק כאן נכנס לתמונה המנוף. הנפה לא מקצועית עלולה לגרום לשבר או סיכון חיים. לכן חשוב לעבוד עם צוות מיומן ומנוף מתאים – וזה בדיוק מה שאנחנו מציעים. חשיבות המנוף בהתקנת פאנלים: דיוק בהצבה, מניעת נזק לפאנלים, בטיחות העובדים, יעילות בזמן. עם הניסיון שלנו והציוד המתקדם, אנחנו מבטיחים התקנה מדויקת ובטוחה של הפאנלים הסולאריים.",
-      category: "סולארי",
-      author: "צוות ג'אן",
-      date: "5 בדצמבר 2024",
-      readTime: "6 דקות קריאה",
-      image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=300&fit=crop"
-    }
-  ];
+
+const articles = [
+  {
+    title: "איך בוחרים מנוף הרמה מתאים לדירה?",
+    excerpt: "כשעוברים דירה לדירה גבוהה או כשאין מעלית – חשוב לבחור מנוף עם כושר נשיאה מתאים, מפעיל מוסמך, וביטוח.",
+    content: "כשעוברים דירה לדירה גבוהה או כשאין מעלית – חשוב לבחור מנוף עם כושר נשיאה מתאים, מפעיל מוסמך, וביטוח. מנופי ההרמה של ג'אן מתאימים לדירות עד קומה 23 וכוללים שירות מלא כולל אבטחת המטען, הורדה מדויקת והצבת הפריט במקום הרצוי. נקודות חשובות לבחירת מנוף: וודאו שיש ביטוח מקיף, בדקו שהמפעיל מוסמך ומנוסה, וודאו שכושר הנשיאה מתאים לפריט, בדקו זמינות ומהירות השירות. בג'אן הרמות אנחנו מספקים את כל הדרישות הללו ועוד, עם ניסיון מוכח ושירות אמין.",
+    category: "טיפים",
+    author: "צוות ג'אן",
+    date: "15 בדצמבר 2024",
+    readTime: "5 דקות קריאה",
+    imageIndex: 0
+  },
+  {
+    title: "למה חשוב לבחור מנוף מוסמך לפרויקטים של בנייה?",
+    excerpt: "מנוף לאתר בנייה הוא לא רק ציוד – הוא שותף לעבודה. מנוף לא מתאים עלול לעכב את הבנייה ולגרום נזקים.",
+    content: "מנוף לאתר בנייה הוא לא רק ציוד – הוא שותף לעבודה. מנוף לא מתאים עלול לעכב את הבנייה ולגרום נזקים. אנחנו בג'אן הרמות עובדים עם קבלנים לפי תקנים מחמירים, עם אישורי עבודה, ניסיון מוכח וציוד מתקדם. יתרונות העבודה עם מנוף מוסמך: עמידה בתקני בטיחות, אישורי עבודה מתאימים, ציוד מתקדם ומתוחזק, מפעילים מקצועיים. העבודה עם מנוף מוסמך מבטיחה שהפרויקט יתקדם בזמן, בבטיחות ובאיכות גבוהה.",
+    category: "מקצועי",
+    author: "צוות ג'אן",
+    date: "10 בדצמבר 2024",
+    readTime: "7 דקות קריאה",
+    imageIndex: 3
+  },
+  {
+    title: "התקנת פאנלים סולאריים? אל תחסוך במנוף!",
+    excerpt: "התקנת קולטים סולאריים דורשת הרמה עד הגג, ובדיוק כאן נכנס לתמונה המנוף.",
+    content: "התקנת קולטים סולאריים דורשת הרמה עד הגג, ובדיוק כאן נכנס לתמונה המנוף. הנפה לא מקצועית עלולה לגרום לשבר או סיכון חיים. לכן חשוב לעבוד עם צוות מיומן ומנוף מתאים – וזה בדיוק מה שאנחנו מציעים. חשיבות המנוף בהתקנת פאנלים: דיוק בהצבה, מניעת נזק לפאנלים, בטיחות העובדים, יעילות בזמן. עם הניסיון שלנו והציוד המתקדם, אנחנו מבטיחים התקנה מדויקת ובטוחה של הפאנלים הסולאריים.",
+    category: "סולארי",
+    author: "צוות ג'אן",
+    date: "5 בדצמבר 2024",
+    readTime: "6 דקות קריאה",
+    imageIndex: 7
+  },
+  {
+    title: "מנוף להרמת ריהוט באשדוד, אשקלון, יבנה וגן יבנה",
+    excerpt: "הפתרון המושלם להרמת ריהוט כבד – בלי לפרק, בלי להזיע",
+    content: "מעבירים ספה, מזנון, מיטה זוגית או שולחן אוכל כבד? במקום לפרק, להרים ולסכן את הריהוט – שירות מנוף להרמת ריהוט מאפשר לכם להעביר כל פריט בקלות, דרך המרפסת או החלון, גם לקומה 10 ומעלה. אנחנו מספקים שירות מהיר, מקצועי ובטוח של מנוף רהיטים באשדוד, באשקלון, ביבנה ובגן יבנה, עם ניסיון רב באתרים מורכבים ובגישה מאתגרת. יתרונות השירות: שמירה על הריהוט ושלמותו, הרמה מהירה עד הקומה הדרושה, ביטוח מלא ואחריות על כל פריט.",
+    category: "שירותים",
+    author: "צוות ג'אן",
+    date: "6 באוגוסט 2025",
+    readTime: "4 דקות קריאה",
+    imageIndex: 5
+  },
+  {
+    title: "מנוף להרמת מוצרי חשמל – באשדוד, יבנה, אשקלון וגן יבנה",
+    excerpt: "מקרר שלא נכנס במעלית? מכונת כביסה כבדה? אנחנו כאן בשביל זה",
+    content: "רכשתם מוצר חשמל חדש ומתקשים להעלות אותו לדירה? שירות מנוף הרמה למוצרי חשמל הוא בדיוק מה שאתם צריכים. אנחנו מתמחים בהרמה בטוחה ועדינה של: מקררים ומקפיאים, תנורים, כיריים ומדיחים, מזגנים מיני מרכזיים, טלוויזיות גדולות ורגישות. היכן אנחנו פועלים? באשדוד, גן יבנה, יבנה ואשקלון – זמינים מהיום להיום! היתרון שלנו: שמירה על מוצרים עדינים, מניעת נזק לקירות ומעברים, פתרון מידי במקרים דחופים.",
+    category: "שירותים",
+    author: "צוות ג'אן",
+    date: "6 באוגוסט 2025",
+    readTime: "4 דקות קריאה",
+    imageIndex: 5
+  },
+  {
+    title: "מנוף לשיפוצים והרמת חומרי בניין באשדוד והסביבה",
+    excerpt: "פתרון מהיר, יעיל ובטיחותי לאתרי בנייה ולשיפוצים",
+    content: "קבלנים, אנשי שיפוצים ודיירים – במקום לסחוב במדרגות, הרימו בקלות ובמהירות עם מנוף הרמה מקצועי. אנחנו מספקים שירות הרמת חומרי בניין באשדוד, וגם בגן יבנה, אשקלון ויבנה – לכל צורך: שקי מלט וטיט, דליים, אריחים, בלוקים, ציוד וכלים כבדים. למה אנחנו? זמינות גבוהה לבניינים בבנייה, חיסכון עצום בזמן וכוח אדם, דיוק בפריקה לפי דרישת הלקוח.",
+    category: "בנייה",
+    author: "צוות ג'אן",
+    date: "6 באוגוסט 2025",
+    readTime: "5 דקות קריאה",
+    imageIndex: 3
+  },
+  {
+    title: "מנוף להרמת לוחות גבס, עץ וחומרי גמר – באשדוד ובערים הסמוכות",
+    excerpt: "כשאין גישה דרך המדרגות – אנחנו מעלים דרך האוויר",
+    content: "לוחות גבס באורך מלא, קירות מוכנים, קרניזים, דלתות עץ או פרופילים – כל אלה קשה להעביר דרך חדר מדרגות. אנחנו מציעים פתרון מותאם אישית – מנוף להרמת גבס באשדוד, גן יבנה, אשקלון ויבנה – כולל חומרים באורך מלא, עד גובה רב. מה אנחנו מרימים? גבס באורך 2.4–3 מטר, קורות עץ ואלומיניום, כל חומר גמר שלא נכנס במעלית. למי זה מתאים? קבלנים ולקוחות פרטיים, שיפוץ דירות ישנות, עבודות גמר בבניינים חדשים.",
+    category: "שירותים",
+    author: "צוות ג'אן",
+    date: "6 באוגוסט 2025",
+    readTime: "4 דקות קריאה",
+    imageIndex: 4
+  }
+];
+
 
   const categoryColors = {
     "בנייה": "bg-blue-100 text-blue-800",
@@ -802,154 +847,362 @@ useEffect(() => {
           </div>
         </section>
 
-        <section id="gallery" className="min-h-screen bg-gray-50 py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                גלריית פרויקטים
-              </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                צפו בפרויקטים שביצענו בהצלחה בכל רחבי הדרום
-              </p>
+// Add these to your state declarations:
+const [currentPage, setCurrentPage] = useState(0);
+const imagesPerPageMobile = 4;
+
+// Update the gallery section:
+<section id="gallery" className="py-20 bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-16">
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        גלריית פרויקטים
+      </h1>
+      <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        צפו בפרויקטים שביצענו בהצלחה בכל רחבי הדרום
+      </p>
+    </div>
+
+    {/* Desktop View - Horizontal Scroll */}
+    <div className="hidden md:block relative">
+      <div className="overflow-x-auto scrollbar-hide">
+        <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
+          {galleryImages.map((image, index) => (
+            <div
+              key={index}
+              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white flex-shrink-0"
+              style={{ width: '350px' }}
+              onClick={() => setSelectedImage({...image, index})}
+            >
+              <div className="aspect-[4/3] relative overflow-hidden">
+                <img
+                  src={`${index + 1}.jpeg`}
+                  alt={image.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-white font-bold text-lg mb-1">{image.title}</h3>
+                  <p className="text-white/90 text-sm">{image.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Scroll Indicator */}
+      <div className="flex justify-center mt-6 gap-2">
+        <div className="flex items-center gap-2 text-gray-500">
+          <ArrowRight className="w-5 h-5" />
+          <span className="text-sm">גללו לראות עוד פרויקטים</span>
+          <ArrowLeft className="w-5 h-5" />
+        </div>
+      </div>
+    </div>
+
+    {/* Mobile View - Pagination */}
+    <div className="md:hidden">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {galleryImages
+          .slice(currentPage * imagesPerPageMobile, (currentPage + 1) * imagesPerPageMobile)
+          .map((image, index) => {
+            const actualIndex = currentPage * imagesPerPageMobile + index;
+            return (
+              <div
+                key={actualIndex}
+                className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white"
+                onClick={() => setSelectedImage({...image, index: actualIndex})}
+              >
+                <div className="aspect-[4/3] relative overflow-hidden">
+                  <img
+                    src={`${actualIndex + 1}.jpeg`}
+                    alt={image.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-white font-bold text-base mb-1">{image.title}</h3>
+                    <p className="text-white/90 text-sm line-clamp-2">{image.description}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+      
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-4 mt-8">
+        <button
+          onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+          disabled={currentPage === 0}
+          className={`p-2 rounded-lg ${
+            currentPage === 0 
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          } transition-colors`}
+        >
+          <ArrowRight className="w-5 h-5" />
+        </button>
+        
+        <div className="flex gap-2">
+          {Array.from({ length: Math.ceil(galleryImages.length / imagesPerPageMobile) }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                currentPage === index 
+                  ? 'bg-blue-600 w-8' 
+                  : 'bg-gray-300 hover:bg-gray-400'
+              }`}
+            />
+          ))}
+        </div>
+        
+        <button
+          onClick={() => setCurrentPage(prev => Math.min(Math.ceil(galleryImages.length / imagesPerPageMobile) - 1, prev + 1))}
+          disabled={currentPage === Math.ceil(galleryImages.length / imagesPerPageMobile) - 1}
+          className={`p-2 rounded-lg ${
+            currentPage === Math.ceil(galleryImages.length / imagesPerPageMobile) - 1
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          } transition-colors`}
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Image Modal - Same as before */}
+  {selectedImage && (
+    <div
+      className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+      onClick={() => setSelectedImage(null)}
+    >
+      <div className="relative max-w-6xl w-full" style={{ animation: 'fadeInScale 0.3s ease-out forwards' }}>
+        <button
+          onClick={() => setSelectedImage(null)}
+          className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+        >
+          <X className="w-8 h-8" />
+        </button>
+        <img
+          src={`${selectedImage.index + 1}.jpeg`}
+          alt={selectedImage.title}
+          className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg">
+          <h3 className="text-white font-bold text-2xl mb-2">{selectedImage.title}</h3>
+          <p className="text-white/90">{selectedImage.description}</p>
+        </div>
+      </div>
+    </div>
+  )}
+</section>
+
+
+<section id="blog" className="min-h-screen bg-gray-50 py-20">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {selectedArticle ? (
+      <div className="max-w-4xl mx-auto">
+        <button
+          onClick={() => setSelectedArticle(null)}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          חזרה לבלוג
+        </button>
+
+        <article className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="aspect-video relative">
+            <img
+              src={`${selectedArticle.imageIndex + 1}.jpeg`}
+              alt={selectedArticle.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-4 right-4">
+              <span className={`badge ${categoryColors[selectedArticle.category as CategoryKey]}`}>
+                {selectedArticle.category}
+              </span>
+            </div>
+          </div>
+          
+          <div className="p-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              {selectedArticle.title}
+            </h1>
+            
+            <div className="flex items-center gap-4 text-sm text-gray-600 mb-8">
+              <div className="flex items-center gap-1">
+                <User className="w-4 h-4" />
+                {selectedArticle.author}
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {selectedArticle.readTime}
+              </div>
+              <span>{selectedArticle.date}</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <div key={index} className="card hover:shadow-xl transition-shadow duration-300">
-                  <div className="aspect-video relative overflow-hidden">
+            <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+              <p className="mb-4">{selectedArticle.content}</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    ) : (
+      <>
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                      בלוג
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            טיפים, מדריכים והכוונה מקצועית בתחום ההרמה והמנופים
+          </p>
+        </div>
+
+        {/* Desktop View - Horizontal Scroll */}
+        <div className="hidden md:block relative">
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
+              {articles.map((article, index) => (
+                <div 
+                  key={index} 
+                  className="card hover:shadow-xl transition-shadow duration-300 cursor-pointer flex-shrink-0"
+                  style={{ width: '400px' }}
+                  onClick={() => setSelectedArticle(article)}
+                >
+                  <div className="aspect-video relative">
                     <img
-                      src={`${index + 1}.jpeg`}
-                      alt={project.title}
+                      src={`${article.imageIndex + 1}.jpeg`}
+                      alt={article.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 right-4">
-                      <span className={`badge ${categoryColors[project.category as CategoryKey]}`}>
-                        {project.category}
+                      <span className={`badge ${categoryColors[article.category as CategoryKey]}`}>
+                        {article.category}
                       </span>
                     </div>
                   </div>
+                  
                   <div className="card-content">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {project.title}
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+                      {article.title}
                     </h3>
-                    <p className="text-gray-600 mb-4">
-                      {project.description}
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {article.excerpt}
                     </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">גובה: {project.height}</span>
-                      <span className="badge bg-blue-50 text-blue-700 border border-blue-200">
-                        הושלם בהצלחה
-                      </span>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {article.readTime}
+                      </div>
+                      <span>{article.date}</span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+          {/* Scroll Indicator */}
+          <div className="flex justify-center mt-6 gap-2">
+            <div className="flex items-center gap-2 text-gray-500">
+              <ArrowRight className="w-5 h-5" />
+              <span className="text-sm">גללו לראות עוד מאמרים</span>
+              <ArrowLeft className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
 
-        <section id="blog" className="min-h-screen bg-gray-50 py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {selectedArticle ? (
-              <div className="max-w-4xl mx-auto">
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8"
+        {/* Mobile View - Pagination */}
+        <div className="md:hidden">
+          <div className="grid grid-cols-1 gap-6">
+            {articles
+              .slice(currentArticlePage * articlesPerPageMobile, (currentArticlePage + 1) * articlesPerPageMobile)
+              .map((article, index) => (
+                <div 
+                  key={index} 
+                  className="card hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  onClick={() => setSelectedArticle(article)}
                 >
-                  <ArrowLeft className="w-4 h-4" />
-                  חזרה לבלוג
-                </button>
-
-                <article className="bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className="aspect-video relative">
                     <img
-                      src={selectedArticle.image}
-                      alt={selectedArticle.title}
+                      src={`${article.imageIndex + 1}.jpeg`}
+                      alt={article.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 right-4">
-                      <span className={`badge ${categoryColors[selectedArticle.category as CategoryKey]}`}>
-                        {selectedArticle.category}
+                      <span className={`badge ${categoryColors[article.category as CategoryKey]}`}>
+                        {article.category}
                       </span>
                     </div>
                   </div>
                   
-                  <div className="p-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                      {selectedArticle.title}
-                    </h1>
-                    
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-8">
+                  <div className="card-content">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 mb-3 text-sm line-clamp-2">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
                       <div className="flex items-center gap-1">
-                        <User className="w-4 h-4" />
-                        {selectedArticle.author}
+                        <Clock className="w-3 h-3" />
+                        {article.readTime}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {selectedArticle.readTime}
-                      </div>
-                      <span>{selectedArticle.date}</span>
-                    </div>
-
-                    <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                      <p className="mb-4">{selectedArticle.content}</p>
+                      <span>{article.date}</span>
                     </div>
                   </div>
-                </article>
-              </div>
-            ) : (
-              <>
-                <div className="text-center mb-16">
-                  <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                    בלוג ג'אן הרמות
-                  </h1>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                    טיפים, מדריכים והכוונה מקצועית בתחום ההרמה והמנופים
-                  </p>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {articles.map((article, index) => (
-                    <div 
-                      key={index} 
-                      className="card hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-                      onClick={() => setSelectedArticle(article)}
-                    >
-                      <div className="aspect-video relative">
-                        <img
-                          src={article.image}
-                          alt={article.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute top-4 right-4">
-                          <span className={`badge ${categoryColors[article.category as CategoryKey]}`}>
-                            {article.category}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="card-content">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                          {article.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4">
-                          {article.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {article.readTime}
-                          </div>
-                          <span>{article.date}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
+              ))}
           </div>
-        </section>
+          
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <button
+              onClick={() => setCurrentArticlePage(prev => Math.max(0, prev - 1))}
+              disabled={currentArticlePage === 0}
+              className={`p-2 rounded-lg ${
+                currentArticlePage === 0 
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              } transition-colors`}
+            >
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            
+            <div className="flex gap-2">
+              {Array.from({ length: Math.ceil(articles.length / articlesPerPageMobile) }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentArticlePage(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentArticlePage === index 
+                      ? 'bg-blue-500 w-8' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setCurrentArticlePage(prev => Math.min(Math.ceil(articles.length / articlesPerPageMobile) - 1, prev + 1))}
+              disabled={currentArticlePage === Math.ceil(articles.length / articlesPerPageMobile) - 1}
+              className={`p-2 rounded-lg ${
+                currentArticlePage === Math.ceil(articles.length / articlesPerPageMobile) - 1
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-blue-500 text-white hover:bg-blue-700'
+              } transition-colors`}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
 
         <section id="contact" className="min-h-screen bg-gray-50 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1060,7 +1313,7 @@ useEffect(() => {
                         />
                       </div>
                       
-                      <button onClick={handleSubmit} style={{backgroundColor:'00AFFE'}} className=" btn blue-gradient w-full">
+                      <button onClick={handleSubmit} style={{backgroundColor:'00AFFE',fontWeight:'bold'}} className=" btn blue-gradient w-full">
                         שלחו הודעה
                       </button>
                     </div>
@@ -1125,6 +1378,16 @@ useEffect(() => {
                       >
                         <Instagram className="w-6 h-6" />
                       </a>
+                      <a href="https://www.tiktok.com/@jan_haramot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 bg-black text-white rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors duration-200"
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+                          <title>TikTok icon</title>
+                          <path fill="currentColor" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                        </svg>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1186,6 +1449,19 @@ useEffect(() => {
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
+                {/* ADD THIS TIKTOK LINK HERE */}
+  <a
+    href="https://www.tiktok.com/@jan_haramot"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors duration-200"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>TikTok icon</title>
+      <path fill="currentColor" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+    </svg>
+  </a>
+
               </div>
             </div>
             
