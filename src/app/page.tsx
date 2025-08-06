@@ -940,7 +940,7 @@ const imagesPerPageMobile = 4;
           className={`p-2 rounded-lg ${
             currentPage === 0 
               ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-blue-500 text-white hover:bg-blue-700'
           } transition-colors`}
         >
           <ArrowRight className="w-5 h-5" />
@@ -953,7 +953,7 @@ const imagesPerPageMobile = 4;
               onClick={() => setCurrentPage(index)}
               className={`w-2 h-2 rounded-full transition-all ${
                 currentPage === index 
-                  ? 'bg-blue-600 w-8' 
+                  ? 'bg-blue-500 w-8' 
                   : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
@@ -966,7 +966,7 @@ const imagesPerPageMobile = 4;
           className={`p-2 rounded-lg ${
             currentPage === Math.ceil(galleryImages.length / imagesPerPageMobile) - 1
               ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-blue-500 text-white hover:bg-blue-700'
           } transition-colors`}
         >
           <ArrowLeft className="w-5 h-5" />
