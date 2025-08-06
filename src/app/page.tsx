@@ -586,7 +586,7 @@ const articles = [
               target="_blank"
               rel="noopener noreferrer"
               style={{backgroundColor:'#00AFFE'}}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
+              className="hidden sm:inline bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">WhatsApp</span>
@@ -596,7 +596,7 @@ const articles = [
             <a
               href="tel:0505477789"
               style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
-              className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+              className=" text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
             >
               <Phone className="w-4 h-4 flex-shrink-0" />
               <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
@@ -849,11 +849,6 @@ const articles = [
           </div>
         </section>
 
-// Add these to your state declarations:
-const [currentPage, setCurrentPage] = useState(0);
-const imagesPerPageMobile = 4;
-
-// Update the gallery section:
 <section id="gallery" className="py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="text-center mb-16">
