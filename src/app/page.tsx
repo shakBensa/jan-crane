@@ -56,6 +56,8 @@ export default function JanCranes() {
     serviceType: "",
     message: ""
   });
+  const galleryScrollRef = React.useRef<HTMLDivElement>(null);
+  const articlesScrollRef = React.useRef<HTMLDivElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -985,12 +987,9 @@ useEffect(() => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service, index) => (
                   <div key={index} className="card group hover:shadow-2xl transition-all duration-500 bg-white hover:-translate-y-2 relative">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity duration-300"></div>
                     <div className="card-content relative">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                          <service.icon className="w-8 h-8 text-white" />
-                        </div>
+
                         <div className="flex-1">
                           <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
                             {service.title}
@@ -1124,37 +1123,65 @@ useEffect(() => {
 
             {/* Desktop View - Horizontal Scroll */}
             <div className="hidden md:block relative">
-              <div className="overflow-x-auto scrollbar-hide">
-                <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
-                  {galleryImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white flex-shrink-0"
-                      style={{ width: '350px' }}
-                      onClick={() => setSelectedImage({ ...image, index })}
-                    >
-                      <div className="aspect-[4/3] relative overflow-hidden">
-                        <img
-                          src={`${index + 1}.jpeg`}
-                          alt={image.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                          <h3 className="text-white font-bold text-lg mb-1">{image.title}</h3>
-                          <p className="text-white/90 text-sm">{image.description}</p>
+              <div className="relative">
+                <div 
+                  ref={galleryScrollRef}
+                  className="overflow-x-auto scrollbar-hide scroll-smooth"
+                  style={{ scrollBehavior: 'smooth' }}
+                >
+                  <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
+                    {galleryImages.map((image, index) => (
+                      <div
+                        key={index}
+                        className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white flex-shrink-0"
+                        style={{ width: '350px' }}
+                        onClick={() => setSelectedImage({ ...image, index })}
+                      >
+                        <div className="aspect-[4/3] relative overflow-hidden">
+                          <img
+                            src={`${index + 1}.jpeg`}
+                            alt={image.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <h3 className="text-white font-bold text-lg mb-1">{image.title}</h3>
+                            <p className="text-white/90 text-sm">{image.description}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
+                
+                {/* Navigation Arrows */}
+                <button
+                  onClick={() => {
+                    if (galleryScrollRef.current) {
+                      galleryScrollRef.current.scrollBy({ left: 370, behavior: 'smooth' });
+                    }
+                  }}
+                  className="absolute top-1/2 -translate-y-1/2 right-0 -mr-12 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 z-10 hover:scale-110"
+                >
+                  <ArrowRight className="w-6 h-6 text-gray-700" />
+                </button>
+                
+                <button
+                  onClick={() => {
+                    if (galleryScrollRef.current) {
+                      galleryScrollRef.current.scrollBy({ left: -370, behavior: 'smooth' });
+                    }
+                  }}
+                  className="absolute top-1/2 -translate-y-1/2 left-0 -ml-12 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 z-10 hover:scale-110"
+                >
+                  <ArrowLeft className="w-6 h-6 text-gray-700" />
+                </button>
               </div>
+              
               {/* Scroll Indicator */}
               <div className="flex justify-center mt-6 gap-2">
                 <div className="flex items-center gap-2 text-gray-500">
-                  <ArrowRight className="w-5 h-5" />
-                  <span className="text-sm">גללו לראות עוד פרויקטים</span>
-                  <ArrowLeft className="w-5 h-5" />
+                  <span className="text-sm">לחצו על החצים או גללו לראות עוד פרויקטים</span>
                 </div>
               </div>
             </div>
@@ -1319,57 +1346,85 @@ useEffect(() => {
 
                 {/* Desktop View - Horizontal Scroll */}
                 <div className="hidden md:block relative">
-                  <div className="overflow-x-auto scrollbar-hide">
-                    <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
-                      {articles.map((article, index) => (
-                        <div
-                          key={index}
-                          className="card hover:shadow-xl transition-shadow duration-300 cursor-pointer flex-shrink-0"
-                          style={{ width: '400px' }}
-                          onClick={() => setSelectedArticle(article)}
-                        >
-                          <div className="aspect-video relative">
-                            <img
-                              src={`${article.imageIndex + 1}.jpeg`}
-                              alt={article.title}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute top-4 right-4">
-                              <span className={`badge ${categoryColors[article.category as CategoryKey]}`}>
-                                {article.category}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="card-content">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
-                              {article.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4 line-clamp-3">
-                              {article.excerpt}
-                            </p>
-                            <div className="flex items-center justify-between text-sm text-gray-500">
-                              <div className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
-                                {article.readTime}
+                  <div className="relative">
+                    <div 
+                      ref={articlesScrollRef}
+                      className="overflow-x-auto scrollbar-hide scroll-smooth"
+                      style={{ scrollBehavior: 'smooth' }}
+                    >
+                      <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
+                        {articles.map((article, index) => (
+                          <div
+                            key={index}
+                            className="card hover:shadow-xl transition-shadow duration-300 cursor-pointer flex-shrink-0"
+                            style={{ width: '400px' }}
+                            onClick={() => setSelectedArticle(article)}
+                          >
+                            <div className="aspect-video relative">
+                              <img
+                                src={`${article.imageIndex + 1}.jpeg`}
+                                alt={article.title}
+                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute top-4 right-4">
+                                <span className={`badge ${categoryColors[article.category as CategoryKey]}`}>
+                                  {article.category}
+                                </span>
                               </div>
-                              <span>{article.date}</span>
+                            </div>
+
+                            <div className="card-content">
+                              <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+                                {article.title}
+                              </h3>
+                              <p className="text-gray-600 mb-4 line-clamp-3">
+                                {article.excerpt}
+                              </p>
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <div className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4" />
+                                  {article.readTime}
+                                </div>
+                                <span>{article.date}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
+                    
+                    {/* Navigation Arrows */}
+                    <button
+                      onClick={() => {
+                        if (articlesScrollRef.current) {
+                          articlesScrollRef.current.scrollBy({ left: 420, behavior: 'smooth' });
+                        }
+                      }}
+                      className="absolute top-1/2 -translate-y-1/2 right-0 -mr-12 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 z-10 hover:scale-110"
+                    >
+                      <ArrowRight className="w-6 h-6 text-gray-700" />
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        if (articlesScrollRef.current) {
+                          articlesScrollRef.current.scrollBy({ left: -420, behavior: 'smooth' });
+                        }
+                      }}
+                      className="absolute top-1/2 -translate-y-1/2 left-0 -ml-12 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 z-10 hover:scale-110"
+                    >
+                      <ArrowLeft className="w-6 h-6 text-gray-700" />
+                    </button>
                   </div>
+                  
                   {/* Scroll Indicator */}
                   <div className="flex justify-center mt-6 gap-2">
                     <div className="flex items-center gap-2 text-gray-500">
-                      <ArrowRight className="w-5 h-5" />
-                      <span className="text-sm">גללו לראות עוד מאמרים</span>
-                      <ArrowLeft className="w-5 h-5" />
+                      <span className="text-sm">לחצו על החצים או גללו לראות עוד מאמרים</span>
                     </div>
                   </div>
                 </div>
-
+                
                 {/* Mobile View - Pagination */}
                 <div className="md:hidden">
                   <div className="grid grid-cols-1 gap-6">
