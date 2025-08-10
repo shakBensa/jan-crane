@@ -131,45 +131,40 @@ useEffect(() => {
     }));
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-    // Here you would typically send the form data to your server or API
-    console.log("Form submitted:", formData);
-  const formDataToSend = {
-    ...formData,
-    access_key: "c396fe2b-18e7-42b4-8522-1a479973ff83"
-  };
-  
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formDataToSend),
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    console.log("Form submission successful:", data);
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  }
+const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
 
+  // WhatsApp requires international format without "+" or leading zeros
+  const whatsappNumber = "972505477789"; // 050-5477789
 
-    // Reset form data
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      serviceType: "",
-      message: ""
-    });
+  const lines = [
+    `שם: ${formData.name || "-"}`,
+    `טלפון לחזרה: ${formData.phone || "-"}`,
+    formData.email ? `אימייל: ${formData.email}` : null,
+    formData.serviceType ? `סוג שירות: ${formData.serviceType}` : null,
+    formData.message ? `הודעה: ${formData.message}` : null,
+  ].filter(Boolean);
 
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
+  const text = `שלום, אשמח לקבל הצעת מחיר/פרטים:\n${lines.join("\n")}`;
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+
+  // Open WhatsApp chat (works for mobile & desktop)
+  window.open(url, "_blank", "noopener,noreferrer");
+
+  // Optional: clear the form
+  setFormData({
+    name: "",
+    phone: "",
+    email: "",
+    serviceType: "",
+    message: ""
+  });
+
+  // Keep your submitted state if you still want the success UI
+  setIsSubmitted(true);
+  setTimeout(() => setIsSubmitted(false), 3000);
+};
+
 
   // Updated cleanedReviews array with ALL unique reviews
   const cleanedReviews = [
@@ -373,13 +368,13 @@ useEffect(() => {
   const services = [
     {
       icon: Package,
-      title: "מנוף הרמה לאתרי בנייה",
+      title: "מנוף הרמה",
       description: "הרמת חומרי בניין לקומות גבוהות - בלוקים, טיט, שקי מלט, גבס וכל מה שצריך לפרויקט",
       features: ["בלוקים וטיט", "שקי מלט", "גבס וקרמיקה", "עד קומה 23"]
     },
     {
       icon: Sofa,
-      title: "הרמת רהיטים ומוצרי חשמל",
+      title: "הובלת דירות ומשרדים",
       description: "הובלתם דירה? מכניסים מקרר, ספה או מיטה דרך המרפסת בזהירות וללא נזק",
       features: ["רהיטים כבדים", "מוצרי חשמל", "דרך המרפסת", "ללא נזק"]
     },
@@ -607,11 +602,10 @@ useEffect(() => {
   ];
 
   const serviceTypes = [
-    "הרמת חומרי בניין",
-    "הרמת רהיטים ומוצרי חשמל",
-    "הרמת פאנלים סולאריים",
-    "הרמת מטבחים ושיש",
-    "הנפת פרגולות ומבנים",
+    "מנוף הרמה",
+    "מנוף זרוע",
+    "מנוף ספיידר",
+    "הובלת דירות ומשרדים",
     "אחר"
   ];
 
@@ -1857,9 +1851,14 @@ useEffect(() => {
                         />
                       </div>
 
-                      <button onClick={handleSubmit} style={{ backgroundColor: '00AFFE', fontWeight: 'bold' }} className=" btn blue-gradient w-full">
-                        שלחו הודעה
-                      </button>
+<button
+  onClick={handleSubmit}
+  style={{ backgroundColor: '#00AFFE', fontWeight: 'bold' }}
+  className="btn blue-gradient w-full flex items-center justify-center gap-2"
+>
+  <MessageSquare className="w-5 h-5" />
+  שלחו בווטסאפ
+</button>
                     </div>
                   )}
                 </div>
@@ -2012,11 +2011,10 @@ useEffect(() => {
             <div>
               <h4 className="text-lg font-semibold mb-4">השירותים שלנו</h4>
               <ul className="space-y-2 text-blue-100">
-                <li>• מנוף הרמה לאתרי בנייה</li>
-                <li>• הרמת רהיטים ומוצרי חשמל</li>
-                <li>• הרמת פאנלים סולאריים</li>
-                <li>• הרמת מטבחים ושיש</li>
-                <li>• הנפת פרגולות ומבנים</li>
+                <li>• מנוף הרמה</li>
+                <li>• מנוף זרוע</li>
+                <li>• מנוף ספיידר</li>
+                <li>• הובלת דירות ומשרדים</li>
               </ul>
             </div>
 
