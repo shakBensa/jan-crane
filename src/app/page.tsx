@@ -796,104 +796,95 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       `}</style>
 
       <>
-        <header
-          className={`floating-header transition-all duration-300 ease-in-out z-50 fixed top-0 left-0 right-0 px-4 sm:px-6 lg:px-8 ${"bg-white/80 shadow-xl border border-gray-200 rounded-3xl"
-            } max-w-6xl mx-auto mt-4 `}
-          dir="rtl"
+<header
+  className={`floating-header fixed top-0 
+              !inset-x-3 sm:inset-x-0
+              px-5 sm:px-6 lg:px-8
+              bg-white/80 shadow-xl border border-gray-200 rounded-3xl
+              max-w-6xl mx-auto mt-4 rounded-4xl backdrop-blur-md
+              relative`}
+  dir="rtl"
+>
+  <div className="flex justify-between items-center h-16">
+    <div className="flex items-center gap-3">
+      <Crane fill={'#0a2b86cc'} className="w-20 h-20 text-white" />
+      <div>
+        <h1 className="text-xl font-bold text-gray-900" style={{ color: '#011659' }}>ג'אן מנופים</h1>
+<p className="text-sm text-gray-600 leading-snug ">
+  מנוף הרמה עד <span className="hidden sm:inline"> </span>
+  <br className="inline sm:hidden" />
+  קומה 23
+</p>
+      </div>
+    </div>
+
+    <nav className="hidden md:flex space-x-4 space-x-reverse">
+      {navigation.map((item) => (
+        <button
+          key={item.name}
+          onClick={() => scrollToSection(item.href)}
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${
+            activeSection === item.href
+              ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
+              : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+          }`}
         >
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              {/* <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center"> */}
-              <Crane fill={'#0a2b86cc'} className="w-20 h-20 text-white" />
-              {/* </div> */}
-              <div>
-                <h1 className="text-xl font-bold text-gray-900" style={{ color: '#011659' }}>ג'אן מנופים</h1>
-                <p className="text-sm text-gray-600">מנוף הרמה עד קומה 23</p>
-              </div>
-            </div>
+          <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
+          <span className="z-10">{item.name}</span>
+        </button>
+      ))}
+    </nav>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex space-x-4 space-x-reverse">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${activeSection === item.href
-                    ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
-                    : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
-                    }`}
-                  style={{
-                    transition: "box-shadow 0.3s, transform 0.3s, background 0.3s",
-                  }}
-                >
-                  {activeSection === item.href && (
-                    <span className="absolute inset-0 bg-gradient-to-r from-blue-200 to-blue-100 opacity-40 rounded-lg animate-pulse pointer-events-none"></span>
-                  )}
-                  <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
-                  <span className="z-10">{item.name}</span>
-                  {activeSection === item.href && (
-                    <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2/3 h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"></span>
-                  )}
-                </button>
-              ))}
-            </nav>
+    <div className="flex items-center gap-3">
+      <a
+        href="https://wa.me/message/KBPJM744WZNBE1"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ backgroundColor: '#00AFFE' }}
+        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
+      >
+        <MessageSquare className="w-4 h-4" />
+        <span className="hidden sm:inline">WhatsApp</span>
+      </a>
 
-            <div className="flex items-center gap-3">
-              {/* WhatsApp */}
-              <a
-                href="https://wa.me/message/KBPJM744WZNBE1"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ backgroundColor: '#00AFFE' }}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-2"
-              >
-                <MessageSquare className="w-4 h-4" />
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
+      <a
+        href="tel:0505477789"
+        style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
+        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+      >
+        <Phone className="w-4 h-4 flex-shrink-0" />
+        <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
+      </a>
 
-              {/* Phone number (icon only on mobile) */}
-              <a
-                href="tel:0505477789"
-                style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
-                className=" text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
-              >
-                <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
-              </a>
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
+      >
+        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+    </div>
+  </div>
 
-              {/* Hamburger Menu */}
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
-            </div>
-          </div>
+  {isMobileMenuOpen && (
+    <div className="md:hidden absolute top-full mt-2 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 space-y-2 max-h-[70vh] overflow-auto">
+      {navigation.map((item) => (
+        <button
+          key={item.name}
+          onClick={() => scrollToSection(item.href)}
+          className={`flex w-full items-center justify-between px-3 py-3 rounded-lg text-base font-medium transition-all ${
+            activeSection === item.href
+              ? "text-[#011659] bg-[#E6F8FF]"
+              : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+          }`}
+        >
+          <span>{item.name}</span>
+          <item.icon className="w-5 h-5" />
+        </button>
+      ))}
+    </div>
+  )}
+</header>
 
-          {/* Mobile Nav Dropdown */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden bg-white/90 backdrop-blur-md shadow-lg rounded-b-2xl px-4 py-4 space-y-2">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`flex w-full items-center justify-between px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ${activeSection === item.href
-                    ? "text-[#011659] bg-[#E6F8FF]"
-                    : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
-                    }`}
-                >
-                  <span>{item.name}</span>
-                  <item.icon className="w-5 h-5" />
-                </button>
-              ))}
-            </div>
-          )}
-        </header>
       </>
 
 
