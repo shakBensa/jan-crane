@@ -68,34 +68,34 @@ export default function JanCranes() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   // Add this state and effect at the top of your component
-  const [isDesktop, setIsDesktop] = useState(false);
+const [isDesktop, setIsDesktop] = useState(false);
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(isDesktop);
-    };
-
-    // Check on mount
-    checkScreenSize();
-
-    // Add resize listener
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(isDesktop);
-    };
-
-    // Check on mount
-    checkScreenSize();
-
-    // Add resize listener
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+useEffect(() => {
+  const checkScreenSize = () => {
+    setIsDesktop(isDesktop);
+  };
+  
+  // Check on mount
+  checkScreenSize();
+  
+  // Add resize listener
+  window.addEventListener('resize', checkScreenSize);
+  
+  return () => window.removeEventListener('resize', checkScreenSize);
+}, []);
+useEffect(() => {
+  const checkScreenSize = () => {
+    setIsDesktop(isDesktop);
+  };
+  
+  // Check on mount
+  checkScreenSize();
+  
+  // Add resize listener
+  window.addEventListener('resize', checkScreenSize);
+  
+  return () => window.removeEventListener('resize', checkScreenSize);
+}, []);
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -131,39 +131,39 @@ export default function JanCranes() {
     }));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
 
-    // WhatsApp requires international format without "+" or leading zeros
-    const whatsappNumber = "972505477789"; // 050-5477789
+  // WhatsApp requires international format without "+" or leading zeros
+  const whatsappNumber = "972505477789"; // 050-5477789
 
-    const lines = [
-      `שם: ${formData.name || "-"}`,
-      `טלפון לחזרה: ${formData.phone || "-"}`,
-      formData.email ? `אימייל: ${formData.email}` : null,
-      formData.serviceType ? `סוג שירות: ${formData.serviceType}` : null,
-      formData.message ? `הודעה: ${formData.message}` : null,
-    ].filter(Boolean);
+  const lines = [
+    `שם: ${formData.name || "-"}`,
+    `טלפון לחזרה: ${formData.phone || "-"}`,
+    formData.email ? `אימייל: ${formData.email}` : null,
+    formData.serviceType ? `סוג שירות: ${formData.serviceType}` : null,
+    formData.message ? `הודעה: ${formData.message}` : null,
+  ].filter(Boolean);
 
-    const text = `שלום, אשמח לקבל הצעת מחיר/פרטים:\n${lines.join("\n")}`;
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const text = `שלום, אשמח לקבל הצעת מחיר/פרטים:\n${lines.join("\n")}`;
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
-    // Open WhatsApp chat (works for mobile & desktop)
-    window.open(url, "_blank", "noopener,noreferrer");
+  // Open WhatsApp chat (works for mobile & desktop)
+  window.open(url, "_blank", "noopener,noreferrer");
 
-    // Optional: clear the form
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      serviceType: "",
-      message: ""
-    });
+  // Optional: clear the form
+  setFormData({
+    name: "",
+    phone: "",
+    email: "",
+    serviceType: "",
+    message: ""
+  });
 
-    // Keep your submitted state if you still want the success UI
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
+  // Keep your submitted state if you still want the success UI
+  setIsSubmitted(true);
+  setTimeout(() => setIsSubmitted(false), 3000);
+};
 
 
   // Updated cleanedReviews array with ALL unique reviews
@@ -796,93 +796,94 @@ export default function JanCranes() {
       `}</style>
 
       <>
-        <header
-          className={`floating-header fixed top-0 
+<header
+  className={`floating-header fixed top-0 
               !inset-x-3 sm:inset-x-0
               px-5 sm:px-6 lg:px-8
               bg-white/80 shadow-xl border border-gray-200 rounded-3xl
               max-w-6xl mx-auto mt-4 rounded-4xl backdrop-blur-md
               relative`}
-          dir="rtl"
+  dir="rtl"
+>
+  <div className="flex justify-between items-center h-16">
+    <div className="flex items-center gap-3">
+      <Crane fill={'#0a2b86cc'} className="w-20 h-20 text-white" />
+      <div>
+        <h1 className="text-xl font-bold text-gray-900" style={{ color: '#011659' }}>ג'אן מנופים</h1>
+<p className="text-sm text-gray-600 leading-snug ">
+  מנוף הרמה עד <span className="hidden sm:inline"> </span>
+  <br className="inline sm:hidden" />
+  קומה 23
+</p>
+      </div>
+    </div>
+
+    <nav className="hidden md:flex space-x-4 space-x-reverse">
+      {navigation.map((item) => (
+        <button
+          key={item.name}
+          onClick={() => scrollToSection(item.href)}
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${
+            activeSection === item.href
+              ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
+              : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+          }`}
         >
-          <div className="flex justify-between items-center md:h-16 py-2 md:py-0 gap-3 flex-wrap">
-            <div className="flex items-center gap-3 min-w-0">
-              <Crane fill={'#0a2b86cc'} className="w-20 h-20 text-white" />
-              <div className="min-w-0">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 leading-tight truncate" style={{ color: '#011659' }}>
-                  ג'אן מנופים
-                </h1>
-                <p className="text-xs sm:text-sm text-gray-600 leading-tight">
-                  מנוף הרמה עד קומה 23
-                </p>
-              </div>
-            </div>
+          <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
+          <span className="z-10">{item.name}</span>
+        </button>
+      ))}
+    </nav>
 
-            <nav className="hidden md:flex space-x-4 space-x-reverse">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  
-                  onClick={() => scrollToSection(item.href)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${activeSection === item.href
-                      ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
-                      : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
-                    }`}
-                >
-                  <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
-                  <span className="z-10">{item.name}</span>
-                </button>
-              ))}
-            </nav>
+    <div className="flex items-center gap-3">
+      <a
+        href="https://wa.me/message/KBPJM744WZNBE1"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ backgroundColor: '#00AFFE' }}
+        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
+      >
+        <MessageSquare className="w-4 h-4" />
+        <span className="hidden sm:inline">WhatsApp</span>
+      </a>
 
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <a
-                href="https://wa.me/message/KBPJM744WZNBE1"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ backgroundColor: '#00AFFE' }}
-                className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
-              >
-                <MessageSquare className="w-4 h-4" />
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
+      <a
+        href="tel:0505477789"
+        style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
+        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
+      >
+        <Phone className="w-4 h-4 flex-shrink-0" />
+        <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
+      </a>
 
-              <a
-                href="tel:0505477789"
-                style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
-                className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
-              >
-                <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
-              </a>
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
+      >
+        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+    </div>
+  </div>
 
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-
-          {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-full mt-2 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 space-y-2 max-h-[70vh] overflow-auto">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`flex w-full items-center justify-between px-3 py-3 rounded-lg text-base font-medium transition-all ${activeSection === item.href
-                      ? "text-[#011659] bg-[#E6F8FF]"
-                      : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
-                    }`}
-                >
-                  <span>{item.name}</span>
-                  <item.icon className="w-5 h-5" />
-                </button>
-              ))}
-            </div>
-          )}
-        </header>
+  {isMobileMenuOpen && (
+    <div className="md:hidden absolute top-full mt-2 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 space-y-2 max-h-[70vh] overflow-auto">
+      {navigation.map((item) => (
+        <button
+          key={item.name}
+          onClick={() => scrollToSection(item.href)}
+          className={`flex w-full items-center justify-between px-3 py-3 rounded-lg text-base font-medium transition-all ${
+            activeSection === item.href
+              ? "text-[#011659] bg-[#E6F8FF]"
+              : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
+          }`}
+        >
+          <span>{item.name}</span>
+          <item.icon className="w-5 h-5" />
+        </button>
+      ))}
+    </div>
+  )}
+</header>
 
       </>
 
@@ -1108,7 +1109,7 @@ export default function JanCranes() {
             {/* Desktop View - Horizontal Scroll */}
             <div className="hidden md:block relative">
               <div className="relative">
-                <div
+                <div 
                   ref={galleryScrollRef}
                   className="overflow-x-auto scrollbar-hide scroll-smooth"
                   style={{ scrollBehavior: 'smooth' }}
@@ -1137,7 +1138,7 @@ export default function JanCranes() {
                     ))}
                   </div>
                 </div>
-
+                
                 {/* Navigation Arrows */}
                 <button
                   onClick={() => {
@@ -1149,7 +1150,7 @@ export default function JanCranes() {
                 >
                   <ArrowRight className="w-6 h-6 text-gray-700" />
                 </button>
-
+                
                 <button
                   onClick={() => {
                     if (galleryScrollRef.current) {
@@ -1161,7 +1162,7 @@ export default function JanCranes() {
                   <ArrowLeft className="w-6 h-6 text-gray-700" />
                 </button>
               </div>
-
+              
               {/* Scroll Indicator */}
               <div className="flex justify-center mt-6 gap-2">
                 <div className="flex items-center gap-2 text-gray-500">
@@ -1331,7 +1332,7 @@ export default function JanCranes() {
                 {/* Desktop View - Horizontal Scroll */}
                 <div className="hidden md:block relative">
                   <div className="relative">
-                    <div
+                    <div 
                       ref={articlesScrollRef}
                       className="overflow-x-auto scrollbar-hide scroll-smooth"
                       style={{ scrollBehavior: 'smooth' }}
@@ -1376,7 +1377,7 @@ export default function JanCranes() {
                         ))}
                       </div>
                     </div>
-
+                    
                     {/* Navigation Arrows */}
                     <button
                       onClick={() => {
@@ -1388,7 +1389,7 @@ export default function JanCranes() {
                     >
                       <ArrowRight className="w-6 h-6 text-gray-700" />
                     </button>
-
+                    
                     <button
                       onClick={() => {
                         if (articlesScrollRef.current) {
@@ -1400,7 +1401,7 @@ export default function JanCranes() {
                       <ArrowLeft className="w-6 h-6 text-gray-700" />
                     </button>
                   </div>
-
+                  
                   {/* Scroll Indicator */}
                   <div className="flex justify-center mt-6 gap-2">
                     <div className="flex items-center gap-2 text-gray-500">
@@ -1408,7 +1409,7 @@ export default function JanCranes() {
                     </div>
                   </div>
                 </div>
-
+                
                 {/* Mobile View - Pagination */}
                 <div className="md:hidden">
                   <div className="grid grid-cols-1 gap-6">
@@ -1687,12 +1688,12 @@ export default function JanCranes() {
                 {/* Left side indicators */}
                 <div className="flex gap-2 items-center">
                   <div className={`rounded-full transition-all duration-500 ${currentReviewIndex > 0
-                    ? 'w-1.5 h-1.5 bg-gray-300 opacity-60'
-                    : 'w-1 h-1 bg-gray-200 opacity-30'
+                      ? 'w-1.5 h-1.5 bg-gray-300 opacity-60'
+                      : 'w-1 h-1 bg-gray-200 opacity-30'
                     }`}></div>
                   <div className={`rounded-full transition-all duration-500 ${currentReviewIndex > 0
-                    ? 'w-2 h-2 bg-gray-400 opacity-80'
-                    : 'w-1.5 h-1.5 bg-gray-200 opacity-40'
+                      ? 'w-2 h-2 bg-gray-400 opacity-80'
+                      : 'w-1.5 h-1.5 bg-gray-200 opacity-40'
                     }`}></div>
                 </div>
 
@@ -1705,12 +1706,12 @@ export default function JanCranes() {
                 {/* Right side indicators */}
                 <div className="flex gap-2 items-center">
                   <div className={`rounded-full transition-all duration-500 ${(isDesktop ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
-                    ? 'w-2 h-2 bg-gray-400 opacity-80'
-                    : 'w-1.5 h-1.5 bg-gray-200 opacity-40'
+                      ? 'w-2 h-2 bg-gray-400 opacity-80'
+                      : 'w-1.5 h-1.5 bg-gray-200 opacity-40'
                     }`}></div>
                   <div className={`rounded-full transition-all duration-500 ${(isDesktop ? currentReviewIndex + 3 < cleanedReviews.length : currentReviewIndex < cleanedReviews.length - 1)
-                    ? 'w-1.5 h-1.5 bg-gray-300 opacity-60'
-                    : 'w-1 h-1 bg-gray-200 opacity-30'
+                      ? 'w-1.5 h-1.5 bg-gray-300 opacity-60'
+                      : 'w-1 h-1 bg-gray-200 opacity-30'
                     }`}></div>
                 </div>
               </div>
@@ -1841,14 +1842,14 @@ export default function JanCranes() {
                         />
                       </div>
 
-                      <button
-                        onClick={handleSubmit}
-                        style={{ backgroundColor: '#00AFFE', fontWeight: 'bold' }}
-                        className="btn blue-gradient w-full flex items-center justify-center gap-2"
-                      >
-                        <MessageSquare className="w-5 h-5" />
-                        שלחו בווטסאפ
-                      </button>
+<button
+  onClick={handleSubmit}
+  style={{ backgroundColor: '#00AFFE', fontWeight: 'bold' }}
+  className="btn blue-gradient w-full flex items-center justify-center gap-2"
+>
+  <MessageSquare className="w-5 h-5" />
+  שלחו בווטסאפ
+</button>
                     </div>
                   )}
                 </div>
