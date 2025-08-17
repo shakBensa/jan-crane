@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ג׳אן מנופים",
-  description: " ,מנופים, הרמות כבדות",
+  title: "דף הבית - ג׳אן מנופים | שירותי מנוף באזור אשדוד, הדרום והמרכז",
+  description: "שירותי מנוף הרמה עד 23 קומות - מנוף מקצועי להרמה בטוחה, פתרונות לגובה",
 };
 
 export default function RootLayout({
