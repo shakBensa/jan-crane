@@ -608,9 +608,158 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     "הובלת דירות ומשרדים",
     "אחר"
   ];
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "ג'אן מנופים",
+    "image": [
+      "https://yourwebsite.com/1.jpeg",
+      "https://yourwebsite.com/2.jpeg",
+      "https://yourwebsite.com/3.jpeg"
+    ],
+    "@id": "https://yourwebsite.com",
+    "url": "https://yourwebsite.com",
+    "telephone": "+972-50-547-7789",
+    "priceRange": "₪₪",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "אשדוד",
+      "addressRegion": "מחוז הדרום",
+      "addressCountry": "IL"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 31.7874644,
+      "longitude": 34.6662908
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday"
+        ],
+        "opens": "07:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "07:00",
+        "closes": "14:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/share/16cAPR1D7K/",
+      "https://www.instagram.com/jan.manofim.i",
+      "https://www.tiktok.com/@jan_haramot"
+    ],
+    "description": "שירותי מנוף הרמה עד 23 קומות באשדוד והסביבה. מתמחים בהרמת רהיטים, חומרי בניין, פאנלים סולאריים ועוד. שירות מקצועי ומהיר.",
+    "areaServed": [
+      {
+        "@type": "City",
+        "name": "אשדוד"
+      },
+      {
+        "@type": "City",
+        "name": "יבנה"
+      },
+      {
+        "@type": "City",
+        "name": "גן יבנה"
+      },
+      {
+        "@type": "City",
+        "name": "אשקלון"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "29",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
+  // Service structured data
+  const serviceStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "שירותי מנוף הרמה",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "ג'אן מנופים"
+    },
+    "areaServed": {
+      "@type": "State",
+      "name": "מחוז הדרום"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "שירותי מנוף",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "מנוף הרמה",
+            "description": "הרמת חומרי בניין לקומות גבוהות - בלוקים, טיט, שקי מלט, גבס וכל מה שצריך לפרויקט"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "הובלת דירות ומשרדים",
+            "description": "הובלתם דירה? מכניסים מקרר, ספה או מיטה דרך המרפסת בזהירות וללא נזק"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "הרמת פאנלים סולאריים",
+            "description": "שירות מקצועי לקולטים סולאריים ודודי שמש לגגות עם דיוק עד רמת המילימטר"
+          }
+        }
+      ]
+    }
+  };
+
+  // FAQ structured data
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+      />
+
+
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
         * {
