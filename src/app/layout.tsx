@@ -14,7 +14,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "דף הבית - ג׳אן מנופים | שירותי מנוף באזור אשדוד, הדרום והמרכז",
-  description: "שירותי מנוף הרמה עד 23 קומות - מנוף מקצועי להרמה בטוחה, פתרונות לגובה",
+  description: "שירותי מנוף הרמה מקצועיים באשדוד והדרום. הרמת רהיטים, חומרי בניין, פאנלים סולאריים ועוד. שירות 24/7 ⭐ 050-5477789",
+  keywords: "מנוף הרמה, מנוף אשדוד, הרמת רהיטים, מנוף יבנה, מנוף אשקלון, הרמה לגובה",
+  openGraph: {
+    title: "ג׳אן מנופים - מנוף הרמה עד 23 קומות",
+    description: "שירותי מנוף הרמה מקצועיים באשדוד והדרום",
+    type: "website",
+    locale: "he_IL",
+    url: "https://jan-manofim.co.il/"
+  },
 };
 
 export default function RootLayout({
@@ -23,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="he" dir="rtl">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
