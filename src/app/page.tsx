@@ -2182,7 +2182,7 @@ const structuredData = {
           </div>
 
           <div className="border-t border-blue-700 mt-8 pt-8 text-center text-blue-100 space-y-4">
-            <p>2024 ג'אן מנופים. כל הזכויות שמורות.</p>
+            <p>&copy; 2024 ג'אן מנופים. כל הזכויות שמורות.</p>
             <a
               href="/terms-of-service"
               className="text-blue-200 hover:text-white underline transition-colors duration-200"

@@ -12,16 +12,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "דף הבית - ג׳אן מנופים | שירותי מנוף באזור אשדוד, הדרום והמרכז",
-  description: "שירותי מנוף הרמה מקצועיים באשדוד והדרום. הרמת רהיטים, חומרי בניין, פאנלים סולאריים ועוד. שירות 24/7 ⭐ 050-5477789",
-  keywords: "מנוף הרמה, מנוף אשדוד, הרמת רהיטים, מנוף יבנה, מנוף אשקלון, הרמה לגובה",
+export const metadata = {
+  metadataBase: new URL('https://jan-manofim.co.il'),
+  title: "ג׳אן מנופים – מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
+  description: "מנוף הרמה עד קומה 23. שירותי מנוף לרהיטים, חומרי בניין, פרגולות, פאנלים סולאריים. שירות מהיר ומקצועי בדרום.",
+  alternates: { canonical: "https://jan-manofim.co.il/" },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "ג׳אן מנופים - מנוף הרמה עד 23 קומות",
-    description: "שירותי מנוף הרמה מקצועיים באשדוד והדרום",
     type: "website",
+    url: "https://jan-manofim.co.il/",
+    title: "ג׳אן מנופים – שירותי מנוף בדרום",
+    description: "שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי.",
+    siteName: "ג׳אן מנופים",
     locale: "he_IL",
-    url: "https://jan-manofim.co.il/"
   },
 };
 
