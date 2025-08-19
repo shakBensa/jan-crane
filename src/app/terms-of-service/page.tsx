@@ -87,13 +87,6 @@ export default function TermsOfService() {
 
           {/* Bottom controls */}
           <div className="mt-12 flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={() => router.back()}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#00AFFE] text-white px-5 py-3 font-medium hover:opacity-90 transition"
-            >
-              <ArrowRight className="w-5 h-5" />
-              חזרה
-            </button>
             <Link
               href="/"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#011659] text-[#011659] px-5 py-3 font-medium hover:bg-[#011659] hover:text-white transition"
