@@ -612,13 +612,9 @@ const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "ג'אן מנופים",
-    "image": [
-      "https://yourwebsite.com/1.jpeg",
-      "https://yourwebsite.com/2.jpeg",
-      "https://yourwebsite.com/3.jpeg"
-    ],
-    "@id": "https://yourwebsite.com",
-    "url": "https://yourwebsite.com",
+
+    "@id": "https://jan-manofim.co.il",
+    "url": "https://jan-manofim.co.il",
     "telephone": "+972-50-547-7789",
     "priceRange": "₪₪",
     "address": {
