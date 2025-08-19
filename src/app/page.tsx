@@ -944,74 +944,87 @@ const structuredData = {
 <header
   className={`floating-header fixed top-0 
               !inset-x-3 sm:inset-x-0
-              px-5 sm:px-6 lg:px-8
+              px-4 sm:px-6 lg:px-8
               bg-white/80 shadow-xl border border-gray-200 rounded-3xl
               max-w-6xl mx-auto mt-4 rounded-4xl backdrop-blur-md
-              relative`}
+              relative z-[1000] overflow-visible`}
   dir="rtl"
 >
-  <div className="flex justify-between items-center h-16">
-    <div className="flex items-center gap-3">
-      <Crane fill={'#0a2b86cc'} className="w-20 h-20 text-white" />
-      <div>
-        <h1 className="text-xl font-bold text-gray-900" style={{ color: '#011659' }}>ג'אן מנופים</h1>
-<p className="text-sm text-gray-600 leading-snug ">
-  מנוף הרמה עד <span className="hidden sm:inline"> </span>
-  <br className="inline sm:hidden" />
-  קומה 23
-</p>
+  {/* BAR */}
+  <div className="flex items-center justify-between gap-3 min-h-16 py-2">
+    {/* BRAND */}
+    <div className="flex items-center gap-2 min-w-0">
+      <Crane fill={'#0a2b86cc'} className="w-12 h-12 md:w-16 md:h-16 flex-shrink-0" />
+      <div className="min-w-0 overflow-hidden">
+        <h1
+          className="font-bold leading-tight text-[clamp(16px,3.4vw,20px)] truncate"
+          style={{ color: '#011659' }}
+          title="ג'אן מנופים"
+        >
+          ג'אן מנופים
+        </h1>
+        <p
+          className="text-gray-600 leading-snug text-[clamp(11px,2.6vw,14px)] truncate"
+          title="מנוף הרמה עד קומה 23"
+        >
+          מנוף הרמה עד קומה 23
+        </p>
       </div>
     </div>
 
-    <nav className="hidden md:flex space-x-4 space-x-reverse">
+    {/* NAV (desktop only) */}
+    <nav className="hidden md:flex flex-wrap gap-2">
       {navigation.map((item) => (
         <button
           key={item.name}
           onClick={() => scrollToSection(item.href)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative overflow-hidden ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
             activeSection === item.href
-              ? "text-[#011659] bg-[#E6F8FF] shadow-lg scale-105"
+              ? "text-[#011659] bg-[#E6F8FF] shadow-lg"
               : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
           }`}
         >
-          <item.icon className={`w-4 h-4 z-10 ${activeSection === item.href ? "text-[#011659]" : ""}`} />
-          <span className="z-10">{item.name}</span>
+          <item.icon className="w-4 h-4" />
+          <span>{item.name}</span>
         </button>
       ))}
     </nav>
 
-    <div className="flex items-center gap-3">
+    {/* ACTIONS */}
+    <div className="flex items-center gap-2 shrink-0">
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
+        aria-label="תפריט"
+      >
+        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      <a
+        href="tel:0505477789"
+        style={{ backgroundColor: '#00AFFE' }}
+        className="text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
+      >
+        <Phone className="w-5 h-5" />
+        <span className="hidden md:inline">050-5477789</span>
+      </a>
+
       <a
         href="https://wa.me/message/KBPJM744WZNBE1"
         target="_blank"
         rel="noopener noreferrer"
         style={{ backgroundColor: '#00AFFE' }}
-        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
+        className="text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors duration-200 flex items-center gap-2"
       >
-        <MessageSquare className="w-4 h-4" />
-        <span className="hidden sm:inline">WhatsApp</span>
+        <MessageSquare className="w-5 h-5" />
+        <span className="hidden md:inline">WhatsApp</span>
       </a>
-
-      <a
-        href="tel:0505477789"
-        style={{ backgroundColor: '#00AFFE', whiteSpace: 'nowrap' }}
-        className="text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity duration-200 flex items-center gap-2"
-      >
-        <Phone className="w-4 h-4 flex-shrink-0" />
-        <span className="hidden sm:inline" style={{ whiteSpace: 'nowrap' }}>050-5477789</span>
-      </a>
-
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none"
-      >
-        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
     </div>
   </div>
 
+  {/* MOBILE MENU */}
   {isMobileMenuOpen && (
-    <div className="md:hidden absolute top-full mt-2 left-0 right-0 z-[60] bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 space-y-2 max-h-[70vh] overflow-auto">
+    <div className="md:hidden absolute top-full mt-2 left-0 right-0 z-[1100] bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 space-y-2 max-h-[70vh] overflow-auto">
       {navigation.map((item) => (
         <button
           key={item.name}
@@ -1022,13 +1035,14 @@ const structuredData = {
               : "text-gray-700 hover:text-[#011659] hover:bg-[#E6F8FF]"
           }`}
         >
-          <span>{item.name}</span>
-          <item.icon className="w-5 h-5" />
+          <span className="truncate">{item.name}</span>
+          <item.icon className="w-5 h-5 flex-shrink-0" />
         </button>
       ))}
     </div>
   )}
 </header>
+
 
       </>
 
@@ -2167,9 +2181,18 @@ const structuredData = {
             </div>
           </div>
 
-          <div className="border-t border-blue-700 mt-8 pt-8 text-center text-blue-100">
-            <p>&copy; 2024 ג'אן מנופים. כל הזכויות שמורות.</p>
+          <div className="border-t border-blue-700 mt-8 pt-8 text-center text-blue-100 space-y-4">
+            <p>2024 ג'אן מנופים. כל הזכויות שמורות.</p>
+            <a
+              href="/terms-of-service"
+              className="text-blue-200 hover:text-white underline transition-colors duration-200"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              📑 תקנון שירות – ג’אן הרמות ומנופים
+            </a>
           </div>
+
         </div>
       </footer>
     </div>
