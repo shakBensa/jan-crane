@@ -14,16 +14,16 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   metadataBase: new URL('https://jan-manofim.co.il'),
-  title: "ג׳אן מנופים – מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
+  title: "ג'אן מנופים – מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
   description: "מנוף הרמה עד קומה 23. שירותי מנוף לרהיטים, חומרי בניין, פרגולות, פאנלים סולאריים. שירות מהיר ומקצועי בדרום.",
   alternates: { canonical: "https://jan-manofim.co.il/" },
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     url: "https://jan-manofim.co.il/",
-    title: "ג׳אן מנופים – שירותי מנוף בדרום",
+    title: "ג'אן מנופים – שירותי מנוף בדרום",
     description: "שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי.",
-    siteName: "ג׳אן מנופים",
+    siteName: "ג'אן מנופים",
     locale: "he_IL",
   },
 };
