@@ -2,13 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft, FileText, Home } from "lucide-react";
 
 export const dynamic = "force-static";
+// app/terms-of-service/page.tsx
 
 export default function TermsOfService() {
-  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">

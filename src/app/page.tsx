@@ -33,8 +33,6 @@ import {
 import Crane from "@/app/Crane";
 /* Varela Round font import moved to global style below */
 
-
-
 interface FormData {
   name: string;
   phone: string;
@@ -69,33 +67,14 @@ export default function JanCranes() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   // Add this state and effect at the top of your component
 const [isDesktop, setIsDesktop] = useState(false);
+useEffect(() => {
+  const checkScreenSize = () => setIsDesktop(window.innerWidth >= 768);
+  checkScreenSize();
+  window.addEventListener("resize", checkScreenSize);
+  return () => window.removeEventListener("resize", checkScreenSize);
+}, []);
 
-useEffect(() => {
-  const checkScreenSize = () => {
-    setIsDesktop(isDesktop);
-  };
-  
-  // Check on mount
-  checkScreenSize();
-  
-  // Add resize listener
-  window.addEventListener('resize', checkScreenSize);
-  
-  return () => window.removeEventListener('resize', checkScreenSize);
-}, []);
-useEffect(() => {
-  const checkScreenSize = () => {
-    setIsDesktop(isDesktop);
-  };
-  
-  // Check on mount
-  checkScreenSize();
-  
-  // Add resize listener
-  window.addEventListener('resize', checkScreenSize);
-  
-  return () => window.removeEventListener('resize', checkScreenSize);
-}, []);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -727,25 +706,19 @@ const structuredData = {
   };
 
   // FAQ structured data
+
   const faqStructuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqItems.map(item => ({
+    "mainEntity": faqItems.map((item) => ({
       "@type": "Question",
       "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": item.answer }
     }))
   };
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
@@ -824,7 +797,7 @@ const structuredData = {
         }
         
         .btn-primary {
-          background: ##011659;
+          background: #011659;
           color: white;
         }
         
