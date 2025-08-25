@@ -81,7 +81,7 @@ export default function TermsOfService() {
           {/* 6 */}
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mt-10 mb-3">6. סמכות שיפוט</h2>
           <ol className="list-decimal pr-5 space-y-1">
-            <li>בכל מחלוקת שתתגלע בין הצדדים, סמכות השיפוט הבלעדית תהיה לבית המשפט המוסמך בעיר אשדוד.</li>
+            <li>בכל מחלוקת שתתגלה בין הצדדים, סמכות השיפוט הבלעדית תהיה לבית המשפט המוסמך בעיר אשדוד.</li>
           </ol>
 
           {/* Bottom controls */}
