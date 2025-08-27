@@ -24,7 +24,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     url: "https://jan-manofim.co.il/",
-    title: "ג'אן מנופים – שירותי מנוף בדרום",
+    title: "ג'אן מנופים | שירותי מנוף בדרום",
     description: "שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי.",
     siteName: "ג'אן מנופים",
     locale: "he_IL",
