@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   metadataBase: new URL('https://jan-manofim.co.il'),
-  title: "ג'אן מנופים – מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
+  title: "ג'אן מנופים | מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
   description: "מנוף הרמה עד קומה 23. שירותי מנוף לרהיטים, חומרי בניין, פרגולות, פאנלים סולאריים. שירות מהיר ומקצועי בדרום.",
   alternates: {
   canonical: "https://jan-manofim.co.il/",
