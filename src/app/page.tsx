@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Home,
   Users,
@@ -68,20 +68,40 @@ export default function JanCranes() {
   // Add this state and effect at the top of your component
 const [isDesktop, setIsDesktop] = useState(false);
 useEffect(() => {
-  const checkScreenSize = () => setIsDesktop(window.innerWidth >= 768);
-  checkScreenSize();
-  window.addEventListener("resize", checkScreenSize);
-  return () => window.removeEventListener("resize", checkScreenSize);
+  const update = () => {
+    const next = window.innerWidth >= 768;
+    setIsDesktop((prev) => (prev !== next ? next : prev));
+  };
+  // initial
+  update();
+  let raf: number | null = null;
+  const onResize = () => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(update);
+  };
+  window.addEventListener("resize", onResize);
+  return () => {
+    if (raf) cancelAnimationFrame(raf);
+    window.removeEventListener("resize", onResize);
+  };
 }, []);
 
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+useEffect(() => {
+  let ticking = false;
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        const next = window.scrollY > 20;
+        setScrolled((prev) => (prev !== next ? next : prev));
+        ticking = false;
+      });
+    }
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  return () => window.removeEventListener("scroll", onScroll as EventListener);
+}, []);
 
 
 
@@ -146,7 +166,7 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
 
   // Updated cleanedReviews array with ALL unique reviews
-  const cleanedReviews = [
+  const cleanedReviews = React.useMemo(() => [
     {
       name: "נופר בכור",
       text: "שירות מעולה זמינים תמיד גם בהתראה קצרה. חייכנים ואדיבים, לא סתם אני לקוחה חוזרת כבר הפעם השלישית.. תבורכו פרנסה בשפע בע״ה 🫶",
@@ -321,11 +341,41 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       date: "לפני 4 חודשים",
       rating: 5
     }
-  ];
+  ], []);
+
+  // Respect page visibility and reduced motion for autoplay
+  const [pageVisible, setPageVisible] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const onVis = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    onVis();
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onMql = (e: MediaQueryListEvent | MediaQueryList) =>
+      setReducedMotion(("matches" in e ? e.matches : (e as MediaQueryList).matches));
+    // init
+    setReducedMotion(mql.matches);
+    // add listener (handle older browsers)
+    if ("addEventListener" in mql) {
+      mql.addEventListener("change", onMql as (this: MediaQueryList, ev: MediaQueryListEvent) => any);
+    } else {
+      // @ts-expect-error legacy
+      mql.addListener(onMql);
+    }
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+      if ("removeEventListener" in mql) {
+        mql.removeEventListener("change", onMql as (this: MediaQueryList, ev: MediaQueryListEvent) => any);
+      } else {
+        // @ts-expect-error legacy
+        mql.removeListener(onMql);
+      }
+    };
+  }, []);
 
   // Update the useEffect for faster auto-play (2.5 seconds instead of 4)
   useEffect(() => {
-    if (isAutoPlaying) {
+    if (isAutoPlaying && pageVisible && !reducedMotion) {
       const interval = setInterval(() => {
         if (isDesktop) {
           // Desktop: move 3 reviews at a time
@@ -334,17 +384,14 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
           );
         } else {
           // Mobile: move 1 review at a time
-          setCurrentReviewIndex((prev) =>
-            (prev + 1) % cleanedReviews.length
-          );
+          setCurrentReviewIndex((prev) => (prev + 1) % cleanedReviews.length);
         }
-      }, 2500); // Changed from 4000 to 2500 milliseconds
-
+      }, 2500);
       return () => clearInterval(interval);
     }
-  }, [isAutoPlaying, cleanedReviews.length]);
+  }, [isAutoPlaying, cleanedReviews.length, isDesktop, pageVisible, reducedMotion]);
 
-  const services = [
+  const services = useMemo(() => [
     {
       icon: Package,
       title: "מנוף הרמה",
@@ -375,9 +422,9 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       description: "עובדים עם נגריות ומתקינים - הנפות מדויקות לפרגולות, גדרות אלומיניום ומבנים קלים",
       features: ["פרגולות", "גדרות אלומיניום", "מבנים קלים", "הנפות מדויקות"]
     }
-  ];
+  ], []);
 
-  const features = [
+  const features = useMemo(() => [
     {
       icon: Shield,
       title: "בטיחות מלאה",
@@ -393,9 +440,9 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       title: "ניסיון מוכח",
       description: "מאות לקוחות מרוצים ופרויקטים מוצלחים"
     }
-  ];
+  ], []);
 
-  const galleryImages = [
+  const galleryImages = useMemo(() => [
     {
       id: 1,
       filename: "אלומיניום-1.jpeg",
@@ -444,10 +491,10 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       title: "התקנת דודי שמש ופאנלים סולאריים",
       description: "הרמה והתקנה של מערכות סולאריות על גגות"
     }
-  ];
+  ], []);
 
 
-  const articles = [
+  const articles = useMemo(() => [
     {
       title: "איך בוחרים מנוף הרמה מתאים לדירה?",
       excerpt: "כשעוברים דירה לדירה גבוהה או כשאין מעלית – חשוב לבחור מנוף עם כושר נשיאה מתאים, מפעיל מוסמך, וביטוח.",
@@ -517,8 +564,18 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       date: "6 באוגוסט 2025",
       readTime: "4 דקות קריאה",
       imageIndex: 4
+    },
+    {
+      title: "מנוף להרמת מזגנים ויחידות גג – VRF/צ'ילרים באשדוד והדרום",
+      excerpt: "הרמה בטוחה ומדויקת של יחידות חוץ וגגות – בתיאום מלא עם מתקיני מיזוג.",
+      content: "מתכננים התקנה של יחידת VRF, צ'ילר או מערכת מיזוג תעשייתית? הרמת יחידות כבדות לגגות ולגבהים דורשת תכנון, ציוד מתאים ותיאום הדוק עם צוות המיזוג. בג'אן מנופים אנו מבצעים הנפות מדויקות של יחידות חוץ, מאיידים וקונסטרוקציות לרוחב הבניין ועד לגג, עם ציוד רתימה מאושר, רצועות מרופדות והגנה על מעטפת המבנה. מה כולל השירות: תיאום מקדים עם מתקין המיזוג, בדיקת גישה ושבילי הנפה, בחירת נקודת עיגון בטוחה, עבודה בשעות בוקר מוקדמות להפחתת רוחות ועמסי תנועה, וביטוח מלא. אזורי שירות: אשדוד, אשקלון, יבנה וגן יבנה, כולל אתרי תעשייה ומבני ציבור. טיפ מקצועי: בימי רוח חזקה ייתכן דחייה לצורך בטיחות – אנו מקפידים על שיקול דעת מקצועי ועל תקני בטיחות מחמירים.",
+      category: "שירותים",
+      author: "צוות ג'אן",
+      date: "3 בספטמבר 2025",
+      readTime: "6 דקות קריאה",
+      imageIndex: 7
     }
-  ];
+  ], []);
 
 
   const categoryColors = {
@@ -561,7 +618,7 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     }
   ];
 
-  const faqItems = [
+  const faqItems = useMemo(() => [
     {
       question: "מה ההבדל בין מנוף סל למנוף הרמה לרהיטים?",
       answer: "מנוף סל נועד להרמת אנשים, מנוף הרמה לרהיטים נועד לפריטים כבדים דרך החלון/מרפסת."
@@ -578,15 +635,15 @@ const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
       question: "מה העלות?",
       answer: "המחיר משתנה לפי גובה, סוג ההרמה, מיקום ומשך זמן העבודה. אפשר לקבל הצעת מחיר מדויקת בטלפון או בווטסאפ."
     }
-  ];
+  ], []);
 
-  const serviceTypes = [
+  const serviceTypes = useMemo(() => [
     "מנוף הרמה",
     "מנוף זרוע",
     "מנוף ספיידר",
     "הובלת דירות ומשרדים",
     "אחר"
-  ];
+  ], []);
 const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -721,6 +778,10 @@ const structuredData = {
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
       />
       <script
@@ -730,11 +791,6 @@ const structuredData = {
 
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
-        * {
-          font-family: 'Varela Round', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         .gradient-bg {
           background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         }

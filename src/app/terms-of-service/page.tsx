@@ -1,11 +1,27 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowRight, ArrowLeft, FileText, Home } from "lucide-react";
 
 export const dynamic = "force-static";
 // app/terms-of-service/page.tsx
+
+export const metadata: Metadata = {
+  title: "תקנון שירות | ג'אן מנופים",
+  description:
+    "תנאי שימוש והתקשרות לשירותי מנוף הרמה של ג'אן מנופים. כללי בטיחות, אחריות ותשלומים.",
+  alternates: { canonical: "/terms-of-service" },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "article",
+    url: "https://jan-manofim.co.il/terms-of-service",
+    title: "תקנון שירות – ג'אן מנופים",
+    description:
+      "תנאי שימוש והתקשרות לשירותי מנוף הרמה – בטיחות, אחריות ותשלומים.",
+    locale: "he_IL",
+    siteName: "ג'אן מנופים",
+  },
+};
 
 export default function TermsOfService() {
 

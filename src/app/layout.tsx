@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { Geist, Geist_Mono, Varela_Round } from "next/font/google";
 import "./globals.css";
+import GAAnalytics from "./ga-analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,7 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+const varelaRound = Varela_Round({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  fallback: ["Segoe UI", "Tahoma", "Geneva", "Verdana", "sans-serif"],
+});
+
+export const metadata: Metadata = {
   metadataBase: new URL('https://jan-manofim.co.il'),
   title: "ג'אן מנופים | מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה",
   description: "מנוף הרמה עד קומה 23. שירותי מנוף לרהיטים, חומרי בניין, פרגולות, פאנלים סולאריים. שירות מהיר ומקצועי בדרום.",
@@ -28,7 +37,40 @@ export const metadata = {
     description: "שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי.",
     siteName: "ג'אן מנופים",
     locale: "he_IL",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ג'אן מנופים – מנוף הרמה באשדוד והדרום",
+      },
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "ג'אן מנופים | שירותי מנוף בדרום",
+    description: "מנוף הרמה עד קומה 23 באשדוד, אשקלון, יבנה וגן יבנה.",
+    images: ["/twitter-image"],
+  },
+  keywords: [
+    "מנוף הרמה",
+    "מנוף אשדוד",
+    "מנוף אשקלון",
+    "מנוף יבנה",
+    "מנוף גן יבנה",
+    "הובלת רהיטים במנוף",
+    "הרמת פאנלים סולאריים",
+  ],
+  formatDetection: { telephone: true, address: true, email: true },
+  icons: { icon: "/favicon.ico" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#011659",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -36,11 +78,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const GA_MEASUREMENT_ID = "G-VM0JVBH8N6";
   return (
     <html lang="he" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${varelaRound.className} antialiased`}
       >
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+        <GAAnalytics id={GA_MEASUREMENT_ID} />
         {children}
       </body>
     </html>
