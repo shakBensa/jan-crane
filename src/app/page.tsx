@@ -1700,11 +1700,9 @@ const structuredData = {
             <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 max-w-2xl mx-auto">
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-4 mb-4">
-                  <img
-                    src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
-                    alt="Google"
-                    className="h-8"
-                  />
+                  <span className="h-8 inline-flex items-center px-2 rounded-md bg-gray-100 text-gray-800 font-semibold">
+                    Google
+                  </span>
                   <span className="text-2xl font-semibold text-gray-800">ביקורות</span>
                 </div>
 
@@ -1762,11 +1760,9 @@ const structuredData = {
                         <p className="text-gray-600 leading-relaxed line-clamp-3">{review.text}</p>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <img
-                              src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_42x16dp.png"
-                              alt="Google"
-                              className="h-4"
-                            />
+                            <span className="h-4 inline-flex items-center px-1 rounded bg-gray-100 text-gray-700 text-xs font-medium">
+                              Google
+                            </span>
                             <span>ביקורת מאומתת</span>
                           </div>
                         </div>
@@ -1799,11 +1795,9 @@ const structuredData = {
                     <p className="text-gray-600 leading-relaxed">{cleanedReviews[currentReviewIndex].text}</p>
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <img
-                          src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_42x16dp.png"
-                          alt="Google"
-                          className="h-4"
-                        />
+                        <span className="h-4 inline-flex items-center px-1 rounded bg-gray-100 text-gray-700 text-xs font-medium">
+                          Google
+                        </span>
                         <span>ביקורת מאומתת</span>
                       </div>
                     </div>

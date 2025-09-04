@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import Script from "next/script";
 import { Geist, Geist_Mono, Varela_Round } from "next/font/google";
 import "./globals.css";
@@ -78,26 +79,32 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const GA_MEASUREMENT_ID = "G-VM0JVBH8N6";
+  const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
   return (
     <html lang="he" dir="rtl">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${varelaRound.className} antialiased`}
       >
         {/* Google Analytics */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
-        <GAAnalytics id={GA_MEASUREMENT_ID} />
+        {GA_MEASUREMENT_ID ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+            <Suspense fallback={null}>
+              <GAAnalytics id={GA_MEASUREMENT_ID} />
+            </Suspense>
+          </>
+        ) : null}
         {children}
       </body>
     </html>
