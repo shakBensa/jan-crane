@@ -36,11 +36,21 @@ export default async function OpengraphImage() {
           padding: 48,
         }}
       >
-        <div style={{ fontSize: 54, fontWeight: 800, marginBottom: 16 }}>
+        <div
+          style={{
+            fontSize: 54,
+            fontWeight: 800,
+            marginBottom: 16,
+            unicodeBidi: "bidi-override",
+            direction: "rtl",
+          }}
+        >
           ג׳אן מנופים
         </div>
-        <div style={{ fontSize: 28, opacity: 0.95 }}>
-          שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי
+        <div
+          style={{ fontSize: 28, opacity: 0.95, unicodeBidi: "bidi-override", direction: "rtl" }}
+        >
+          שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי
         </div>
       </div>
     ),

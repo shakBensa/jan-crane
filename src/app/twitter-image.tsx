@@ -15,6 +15,7 @@ export default async function TwitterImage() {
     (
       <div
         dir="rtl"
+        lang="he"
         style={{
           width,
           height,
@@ -29,8 +30,8 @@ export default async function TwitterImage() {
           direction: "rtl",
         }}
       >
-        <div style={{ fontSize: 50, marginBottom: 16 }}>ג'אן מנופים</div>
-        <div style={{ fontSize: 26, opacity: 0.95 }}>
+        <div style={{ fontSize: 50, marginBottom: 16, unicodeBidi: "bidi-override", direction: "rtl" }}>ג'אן מנופים</div>
+        <div style={{ fontSize: 26, opacity: 0.95, unicodeBidi: "bidi-override", direction: "rtl" }}>
           שירותי מנוף הרמה עד קומה 23
         </div>
       </div>
