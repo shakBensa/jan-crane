@@ -5,15 +5,18 @@ export const alt = "ג'אן מנופים – מנוף הרמה בדרום";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
-  const { width, height } = size;
+export default async function OpengraphImage() {
+  const fontData = await fetch(
+    new URL("./Heebo-Bold.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
+
   return new ImageResponse(
     (
       <div
         dir="rtl"
         style={{
-          width,
-          height,
+          width: size.width,
+          height: size.height,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -24,6 +27,7 @@ export default function OpengraphImage() {
           fontSize: 64,
           fontWeight: 800,
           direction: "rtl",
+          textAlign: "center",
         }}
       >
         <div style={{ fontSize: 54, marginBottom: 16 }}>ג'אן מנופים</div>
@@ -32,6 +36,16 @@ export default function OpengraphImage() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Heebo",
+          data: fontData,
+          style: "normal",
+          weight: 700,
+        },
+      ],
+    }
   );
 }
