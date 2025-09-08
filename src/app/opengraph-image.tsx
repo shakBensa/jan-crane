@@ -2,15 +2,15 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "ג׳אן מנופים – מנוף הרמה בדרום"; // note the Hebrew geresh U+05F3
+export const alt = "ג׳אן מנופים – מנוף הרמה בדרום";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
-  // Put Heebo-Bold.ttf (or NotoSansHebrew-Bold.ttf) next to this file
-  const heebo = await fetch(new URL("./Heebo-Bold.ttf", import.meta.url)).then(
-    (r) => r.arrayBuffer()
-  );
+  // Load your font from app/fonts
+  const heebo = await fetch(
+    new URL("./fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -29,7 +29,6 @@ export default async function OpengraphImage() {
           color: "#fff",
           textAlign: "center",
           padding: 48,
-          // global defaults (still apply BiDi per-node below)
           direction: "rtl",
         }}
       >
@@ -38,7 +37,7 @@ export default async function OpengraphImage() {
             fontSize: 54,
             fontWeight: 800,
             marginBottom: 16,
-            unicodeBidi: "bidi-override", // <- force RTL order
+            unicodeBidi: "bidi-override",
             direction: "rtl",
           }}
         >
@@ -59,7 +58,14 @@ export default async function OpengraphImage() {
     ),
     {
       ...size,
-      fonts: [{ name: "Heebo", data: heebo, weight: 700, style: "normal" }],
+      fonts: [
+        {
+          name: "Heebo",
+          data: heebo,
+          style: "normal",
+          weight: 400, // variable font → you can set 100–900
+        },
+      ],
     }
   );
 }
