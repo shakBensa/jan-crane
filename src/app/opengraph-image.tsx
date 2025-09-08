@@ -7,10 +7,13 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
-  // Load your font from app/fonts
   const heebo = await fetch(
     new URL("./fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  ).then(r => r.arrayBuffer());
+
+  const title = "ג׳אן מנופים";
+  // RLM before the number helps BiDi with “23”
+  const subtitle = "‏שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי";
 
   return new ImageResponse(
     (
@@ -24,8 +27,8 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          background:
-            "linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)",
+          // avoid strong gradients (see #2 below)
+          background: "#0f276c",
           color: "#fff",
           textAlign: "center",
           padding: 48,
@@ -37,35 +40,29 @@ export default async function OpengraphImage() {
             fontSize: 54,
             fontWeight: 800,
             marginBottom: 16,
-            unicodeBidi: "bidi-override",
+            unicodeBidi: "plaintext",
             direction: "rtl",
+            whiteSpace: "pre-wrap",
           }}
         >
-          ג׳אן מנופים
+          {title}
         </div>
-
         <div
           style={{
             fontSize: 28,
             opacity: 0.95,
-            unicodeBidi: "bidi-override",
+            unicodeBidi: "plaintext",
             direction: "rtl",
+            whiteSpace: "pre-wrap",
           }}
         >
-          מנוף הרמה באשדוד, אשקלון, יבנה וגן יבנה
+          {subtitle}
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: "Heebo",
-          data: heebo,
-          style: "normal",
-          weight: 400, // variable font → you can set 100–900
-        },
-      ],
+      fonts: [{ name: "Heebo", data: heebo, style: "normal", weight: 700 }],
     }
   );
 }
