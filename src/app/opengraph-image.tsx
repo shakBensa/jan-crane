@@ -4,11 +4,23 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+// (Optional) helps some crawlers treat it like a stable asset
+export const alt = "ג׳אן מנופים – שירותי מנוף הרמה עד 23 קומות";
+
 export default async function OpengraphImage() {
-  // Bundle font with the route (no network fetch)
-  const fontData = await fetch(
-    new URL("../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
-  ).then((r) => r.arrayBuffer());
+  let fontData: ArrayBuffer | undefined;
+  try {
+    // app/ and public/ are siblings → ../public/...
+    fontData = await fetch(
+      new URL("../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+    ).then((r) => {
+      if (!r.ok) throw new Error(`Font fetch failed: ${r.status}`);
+      return r.arrayBuffer();
+    });
+  } catch {
+    // Continue without a custom font so we still emit a valid PNG
+    fontData = undefined;
+  }
 
   return new ImageResponse(
     (
@@ -26,22 +38,21 @@ export default async function OpengraphImage() {
           color: "#fff",
           textAlign: "center",
           padding: 48,
-          direction: "rtl",
         }}
       >
-        <div style={{ fontSize: 54, fontWeight: 800, marginBottom: 16, unicodeBidi: "plaintext", direction: "rtl" }}>
+        <div style={{ fontSize: 54, fontWeight: 800, marginBottom: 16 }}>
           ג׳אן מנופים
         </div>
-        <div style={{ fontSize: 28, opacity: 0.95, unicodeBidi: "plaintext", direction: "rtl" }}>
-          ‏שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי
+        <div style={{ fontSize: 28, opacity: 0.95 }}>
+          שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [
-        { name: "Heebo", data: fontData, style: "normal", weight: 600 },
-      ],
+      fonts: fontData
+        ? [{ name: "Heebo", data: fontData, style: "normal", weight: 600 }]
+        : [],
     }
   );
 }
