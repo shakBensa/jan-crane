@@ -9,7 +9,7 @@ export default async function TwitterImage() {
   const { width, height } = size;
   // Bundle font with the route (no network fetch)
   const fontData = await fetch(
-    new URL("../../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+      new URL("./opengraph-assets/Heebo-VariableFont_wght.ttf", import.meta.url)
   ).then((r) => r.arrayBuffer());
   return new ImageResponse(
     (
