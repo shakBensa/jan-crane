@@ -1,53 +1,64 @@
-// app/api/og/route.tsx
 import { NextRequest, NextResponse } from 'next/server';
+import satori from 'satori';
+import { Resvg } from '@resvg/resvg-js';
 
 export async function GET(request: NextRequest) {
   try {
-    // Use node-canvas or @napi-rs/canvas for server-side canvas rendering
-    // This requires installing additional dependencies
-    
-    // Example with @napi-rs/canvas:
-    // npm install @napi-rs/canvas
-    
-    const { createCanvas } = await import('@napi-rs/canvas');
-    
-    const width = 1200;
-    const height = 630;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-    
-    // Create gradient background
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#1e3a8a');
-    gradient.addColorStop(0.5, '#1e40af');
-    gradient.addColorStop(1, '#2563eb');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-    
-    // Set text properties
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Draw Hebrew text with proper RTL
-    ctx.font = 'bold 54px Arial';
-    ctx.direction = 'rtl';
-    ctx.fillText('ג׳אן מנופים', width / 2, height / 2 - 40);
-    
-    ctx.font = '28px Arial';
-    ctx.globalAlpha = 0.95;
-    ctx.fillText('שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי', width / 2, height / 2 + 40);
-    
-    const buffer = canvas.toBuffer('image/png');
-    const uint8Array = new Uint8Array(buffer);
+    // Generate SVG with Satori
+    const svg = await satori(
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
+          color: '#fff',
+          textAlign: 'center',
+          padding: 48,
+        }}
+      >
+        <div style={{ 
+          fontSize: 54, 
+          fontWeight: 800, 
+          marginBottom: 16,
+          // Try these RTL approaches
+          direction: 'rtl',
+          unicodeBidi: 'bidi-override',
+        }}>
+          ג׳אן מנופים
+        </div>
+        <div style={{ 
+          fontSize: 28, 
+          opacity: 0.95,
+          direction: 'rtl',
+          unicodeBidi: 'bidi-override',
+        }}>
+          שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי
+        </div>
+      </div>,
+      {
+        width: 1200,
+        height: 630,
+        fonts: [], // Add custom fonts if needed
+      }
+    );
 
-    return new NextResponse(uint8Array, {
+    // Convert SVG to PNG using @resvg/resvg-js
+    const resvg = new Resvg(svg);
+    const pngData = resvg.render();
+    const pngBuffer = pngData.asPng();
+
+    return new NextResponse(new Uint8Array(pngBuffer), {
       headers: {
         'Content-Type': 'image/png',
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Cache-Control': 'public, max-age=31536000, immutable',
       },
     });
   } catch (error) {
+    console.error('Error:', error);
     return new NextResponse('Error generating image', { status: 500 });
   }
 }
