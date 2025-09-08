@@ -10,6 +10,7 @@ export default function TwitterImage() {
   return new ImageResponse(
     (
       <div
+        dir="rtl"
         style={{
           width,
           height,
@@ -21,6 +22,7 @@ export default function TwitterImage() {
           color: "#fff",
           fontSize: 60,
           fontWeight: 800,
+          direction: "rtl",
         }}
       >
         <div style={{ fontSize: 50, marginBottom: 16 }}>ג'אן מנופים</div>
@@ -32,4 +34,3 @@ export default function TwitterImage() {
     { ...size }
   );
 }
-

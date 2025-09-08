@@ -10,6 +10,7 @@ export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
+        dir="rtl"
         style={{
           width,
           height,
@@ -22,6 +23,7 @@ export default function OpengraphImage() {
           color: "#fff",
           fontSize: 64,
           fontWeight: 800,
+          direction: "rtl",
         }}
       >
         <div style={{ fontSize: 54, marginBottom: 16 }}>ג'אן מנופים</div>
@@ -33,4 +35,3 @@ export default function OpengraphImage() {
     { ...size }
   );
 }
-
