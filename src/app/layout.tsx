@@ -39,14 +39,19 @@ export const metadata: Metadata = {
     siteName: "ג'אן מנופים",
     locale: "he_IL",
     images: [
-      { url: "https://jan-manofim.co.il/opengraph-image?v=4", width: 1200, height: 630, alt: "ג׳אן מנופים" },
+      {
+        url: "https://jan-manofim.co.il/opengraph-image.png?v=6",
+        width: 1200,
+        height: 630,
+        alt: "ג׳אן מנופים",
+      },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ג'אן מנופים | שירותי מנוף בדרום",
     description: "מנוף הרמה עד קומה 23 באשדוד, אשקלון, יבנה וגן יבנה.",
-    images: ["/twitter-image"],
+    images: ["/twitter-image.png?v=6"],
   },
   keywords: [
     "מנוף הרמה",
