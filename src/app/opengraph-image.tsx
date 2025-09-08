@@ -12,7 +12,7 @@ export default async function OpengraphImage() {
   try {
     // app/ and public/ are siblings → ../public/...
     fontData = await fetch(
-      new URL("../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+      new URL(".fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
     ).then((r) => {
       if (!r.ok) throw new Error(`Font fetch failed: ${r.status}`);
       return r.arrayBuffer();
