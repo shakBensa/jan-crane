@@ -39,12 +39,7 @@ export const metadata: Metadata = {
     siteName: "ג'אן מנופים",
     locale: "he_IL",
     images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "ג'אן מנופים – מנוף הרמה באשדוד והדרום",
-      },
+      { url: "https://jan-manofim.co.il/opengraph-image?v=4", width: 1200, height: 630, alt: "ג׳אן מנופים" },
     ],
   },
   twitter: {

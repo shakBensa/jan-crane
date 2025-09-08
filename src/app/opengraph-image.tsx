@@ -2,18 +2,17 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "ג׳אן מנופים – מנוף הרמה בדרום";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
-  const heebo = await fetch(
-    new URL("./fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
-  ).then(r => r.arrayBuffer());
-
-  const title = "ג׳אן מנופים";
-  // RLM before the number helps BiDi with “23”
-  const subtitle = "‏שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי";
+  // Fetch from the public folder (replace domain if needed)
+  let fontData: ArrayBuffer | undefined;
+  try {
+    fontData = await fetch(
+      "https://jan-manofim.co.il/fonts/Heebo-VariableFont_wght.ttf"
+    ).then((r) => r.arrayBuffer());
+  } catch {}
 
   return new ImageResponse(
     (
@@ -27,7 +26,6 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          // avoid strong gradients (see #2 below)
           background: "#0f276c",
           color: "#fff",
           textAlign: "center",
@@ -35,34 +33,19 @@ export default async function OpengraphImage() {
           direction: "rtl",
         }}
       >
-        <div
-          style={{
-            fontSize: 54,
-            fontWeight: 800,
-            marginBottom: 16,
-            unicodeBidi: "plaintext",
-            direction: "rtl",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {title}
+        <div style={{ fontSize: 54, fontWeight: 800, marginBottom: 16, unicodeBidi: "plaintext", direction: "rtl" }}>
+          ג׳אן מנופים
         </div>
-        <div
-          style={{
-            fontSize: 28,
-            opacity: 0.95,
-            unicodeBidi: "plaintext",
-            direction: "rtl",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {subtitle}
+        <div style={{ fontSize: 28, opacity: 0.95, unicodeBidi: "plaintext", direction: "rtl" }}>
+          ‏שירותי מנוף הרמה עד ‏23 קומות, מקצועי ובטיחותי
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [{ name: "Heebo", data: heebo, style: "normal", weight: 700 }],
+      fonts: fontData
+        ? [{ name: "Heebo", data: fontData, style: "normal", weight: 600 }]
+        : [],
     }
   );
 }
