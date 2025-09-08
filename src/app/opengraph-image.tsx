@@ -4,11 +4,10 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
 export default async function OpengraphImage() {
   // Bundle font with the route (no network fetch)
   const fontData = await fetch(
-    new URL("../../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+    new URL("../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
   ).then((r) => r.arrayBuffer());
 
   return new ImageResponse(
