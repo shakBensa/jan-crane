@@ -5,8 +5,12 @@ export const alt = "ג'אן מנופים – מנוף הרמה בדרום";
 export const size = { width: 1200, height: 600 };
 export const contentType = "image/png";
 
-export default function TwitterImage() {
+export default async function TwitterImage() {
   const { width, height } = size;
+  // Bundle font with the route (no network fetch)
+  const fontData = await fetch(
+    new URL("../../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+  ).then((r) => r.arrayBuffer());
   return new ImageResponse(
     (
       <div
@@ -31,6 +35,11 @@ export default function TwitterImage() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        { name: "Heebo", data: fontData, style: "normal", weight: 600 },
+      ],
+    }
   );
 }

@@ -6,13 +6,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
-  // Fetch from the public folder (replace domain if needed)
-  let fontData: ArrayBuffer | undefined;
-  try {
-    fontData = await fetch(
-      "https://jan-manofim.co.il/fonts/Heebo-VariableFont_wght.ttf"
-    ).then((r) => r.arrayBuffer());
-  } catch {}
+  // Bundle font with the route (no network fetch)
+  const fontData = await fetch(
+    new URL("../../public/fonts/Heebo-VariableFont_wght.ttf", import.meta.url)
+  ).then((r) => r.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -43,9 +40,9 @@ export default async function OpengraphImage() {
     ),
     {
       ...size,
-      fonts: fontData
-        ? [{ name: "Heebo", data: fontData, style: "normal", weight: 600 }]
-        : [],
+      fonts: [
+        { name: "Heebo", data: fontData, style: "normal", weight: 600 },
+      ],
     }
   );
 }
