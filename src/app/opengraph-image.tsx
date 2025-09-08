@@ -1,8 +1,12 @@
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge';
+export const runtime = 'edge'
+export const alt = "ג׳אן מנופים – מנוף הרמה בדרום"
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
 
-// Better text reversal for mixed content
+export default async function OpenGraphImage() {
+  const { width, height } = size
 function fixHebrewText(text: string): string {
   // This handles mixed Hebrew/English/numbers better
   const segments = text.split(/(\s+|[0-9]+|[a-zA-Z]+)/);
@@ -15,7 +19,6 @@ function fixHebrewText(text: string): string {
   }).reverse().join('');
 }
 
-export async function GET() {
   return new ImageResponse(
     (
       <div
@@ -26,24 +29,36 @@ export async function GET() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
+          background:
+            'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
           color: '#fff',
           textAlign: 'center',
           padding: 48,
         }}
       >
-        <div style={{ fontSize: 54, fontWeight: 800, marginBottom: 16 }}>
-          {fixHebrewText('ג׳אן מנופים')}
+        <div
+          style={{
+            fontSize: 54,
+            fontWeight: 800,
+            marginBottom: 16,
+            direction: 'rtl',
+            unicodeBidi: 'bidi-override',
+          }}
+        >
+        {fixHebrewText("ג׳אן מנופים")}
         </div>
-        <div style={{ fontSize: 28, opacity: 0.95 }}>
-          {fixHebrewText('שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי')}
+        <div
+          style={{
+            fontSize: 28,
+            opacity: 0.95,
+            direction: 'rtl',
+            unicodeBidi: 'bidi-override',
+          }}
+        >
+          {fixHebrewText("שירותי מנוף הרמה עד 23 קומות, מקצועי ובטיחותי")}
         </div>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    }
-  );
+    { width, height }
+  )
 }
-
